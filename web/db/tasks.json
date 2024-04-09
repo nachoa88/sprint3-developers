@@ -1,0 +1,29 @@
+/* Ha de contemplar l'opció d'afegir tasques, llistar-les i mostrar el seu estat 
+(pendents, en execució o acabades), i l'hora d'inici i fi de la tasca, així com 
+l'usuari/ària que la va donar d'alta.
+*/
+{
+    "tasks": [
+        {
+            "id": 1,
+            "status": "pendents",
+            "dateTimeStarted": "2022-01-01T10:00:00Z",
+            "dateTimeFinished": null,
+            "user": "user1"
+        },
+        {
+            "id": 2,
+            "status": "en execució",
+            "dateTimeStarted": "2022-01-02T08:00:00Z",
+            "dateTimeFinished": null,
+            "user": "user2"
+        },
+        {
+            "id": 3,
+            "status": "acabades",
+            "dateTimeStarted": "2022-01-03T06:30:00Z",
+            "dateTimeFinished": "2022-01-04T20:30:00Z",
+            "user": "user3"
+        }
+    ]
+}

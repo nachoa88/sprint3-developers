@@ -1,0 +1,6 @@
+/vendor/
+/.idea/
+/.vscode/
+/Dockerfile
+/docker-compose.yml
+*.log
