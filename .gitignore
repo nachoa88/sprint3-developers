@@ -3,4 +3,6 @@
 /.vscode/
 /Dockerfile
 /docker-compose.yml
+
 *.log
+.DS_Store
