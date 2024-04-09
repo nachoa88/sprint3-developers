@@ -4,7 +4,8 @@ class TaskController extends Controller
 {
     public function indexAction() {
         // Get all tasks and display them
-        $this->view->message = "This is the index.";
+        $taskModel = new Task();
+        $this->view->message = $taskModel->getAllTasks();
     }
 
     public function createTaskAction() {
