@@ -10,7 +10,7 @@
     {
         "id": 2,
         "name": "task 2",
-        "status": "en execuci\u00f3",
+        "status": "en execució",
         "dateTimeStarted": "2022-01-02T08:00:00Z",
         "dateTimeFinished": null,
         "user": "user2"
@@ -22,13 +22,5 @@
         "dateTimeStarted": "2022-01-03T06:30:00Z",
         "dateTimeFinished": "2022-01-04T20:30:00Z",
         "user": "user3"
-    },
-    {
-        "id": 4,
-        "name": "new",
-        "status": "pendents",
-        "dateTimeStarted": "2024-04-10T19:07",
-        "dateTimeFinished": "2024-04-11T19:07",
-        "user": "Stef"
     }
 ]

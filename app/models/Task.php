@@ -19,7 +19,6 @@ class Task
 
     public function __construct()
     {
-
     }
 
     public function getData()
@@ -48,13 +47,16 @@ class Task
     public function createTask()
     {
         // Implement the logic to create a new task in the database
+        if(!$_POST['status']){
+            
+        }
 
         $data = $this->getData();
         $tasks = json_decode($data, true); //decode data to an array
 
         // Get last id
         $last_item = end($tasks);
-        $last_item_id = $last_item['id'];   
+        $last_item_id = $last_item['id'];
 
         // update id to last id + 1
         $_POST['id'] = ++$last_item_id;
@@ -65,9 +67,6 @@ class Task
 
         // write to file
         file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
-        // $fp = fopen('../web/db/tasks.json', 'w');
-        // fwrite($fp, $jsonString);
-        // fclose($fp);       
     }
 
     public function updateTask()

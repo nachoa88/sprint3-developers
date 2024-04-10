@@ -10,11 +10,13 @@ class TaskController extends Controller
 
     public function createTaskAction() {
         // Show the form for creating a new task
-        
 
         if($_SERVER['REQUEST_METHOD'] == 'POST'){
             $taskModel = new Task();
             $taskModel->createTask();
+
+            // Redirect to index after the model does its work
+            return header('Location: index');
         }
     }
 
