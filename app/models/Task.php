@@ -9,6 +9,7 @@ enum Status
 
 class Task
 {
+    // properties that represent the data 
     private int $id;
     private string $name;
     private Status $status;
@@ -16,22 +17,27 @@ class Task
     private string $dateTimeFinished;
     private string $user;
 
-    private string $filename;
-    private string $data;
-    private array $tasks;
-
     public function __construct()
     {
-        $this->filename = '../web/db/tasks.json';
-        $this->data = file_get_contents($this->filename); //data read from json file
-        $this->tasks = json_decode($this->data); //decode data
+
+    }
+
+    public function getConnection()
+    {
+        $filename = '../web/db/tasks.json';
+        $data = file_get_contents($filename); //data read from json file
+        return $data;
     }
 
     // CRUD
-    public function getAllTasks():array
+    public function getAllTasks(): array
     {
         // Implement the logic to get all tasks
-        return $this->tasks;
+        $db = $this->getConnection();
+        $result = json_decode($db); //decode data
+        $tasks = $result;
+
+        return $tasks;
     }
 
     public function getTaskById()
