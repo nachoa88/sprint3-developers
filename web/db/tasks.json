@@ -10,32 +10,6 @@
     {
         "id": 2,
         "name": "task 2",
-        "status": "en execució",
-        "dateTimeStarted": "2022-01-02T08:00:00Z",
-        "dateTimeFinished": null,
-        "user": "user2"
-    },
-    {
-        "id": 3,
-        "name": "task 3",
-        "status": "acabades",
-        "dateTimeStarted": "2022-01-03T06:30:00Z",
-        "dateTimeFinished": "2022-01-04T20:30:00Z",
-        "user": "user3"
-    }
-]
-[
-    {
-        "id": 1,
-        "name": "task 1",
-        "status": "pendents",
-        "dateTimeStarted": "2022-01-01T10:00:00Z",
-        "dateTimeFinished": null,
-        "user": "user1"
-    },
-    {
-        "id": 2,
-        "name": "task 2",
         "status": "en execuci\u00f3",
         "dateTimeStarted": "2022-01-02T08:00:00Z",
         "dateTimeFinished": null,
@@ -51,10 +25,10 @@
     },
     {
         "id": 4,
-        "name": "new task",
+        "name": "new",
         "status": "pendents",
-        "dateTimeStarted": "2024-04-10T16:05",
-        "dateTimeFinished": "2024-04-18T16:05",
+        "dateTimeStarted": "2024-04-10T19:07",
+        "dateTimeFinished": "2024-04-11T19:07",
         "user": "Stef"
     }
 ]

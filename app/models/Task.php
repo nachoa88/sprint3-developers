@@ -64,7 +64,7 @@ class Task
         $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
 
         // write to file
-        file_put_contents('../web/db/tasks.json', $jsonString, FILE_APPEND | LOCK_EX);
+        file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
         // $fp = fopen('../web/db/tasks.json', 'w');
         // fwrite($fp, $jsonString);
         // fclose($fp);       
