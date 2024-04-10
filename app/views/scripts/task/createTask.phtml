@@ -1,3 +1,32 @@
-<?php
-
-echo $this->message;
+<div>
+<form action="create" method="post">
+<input type="hidden" id="id" name="id">
+<div>
+<div><label for="name">Task:</label></div>
+<div><input type="text" id="name" name="name"></div>
+</div>
+<div>
+<div><label for="pendents">Pendents</label></div>
+<div><input type="radio" id="pendents" name="status" value="pendents"></div>
+<div><label for="en execució">En execució</label></div>
+<div><input type="radio" id="en execució" name="status" value="en execució"></div>
+<div><label for="acabades">Acabades</label></div>
+<div><input type="radio" id="acabades" name="status" value="acabades"></div>
+</div>
+<div>
+<div><label for="dateTimeStarted">Start:</label></div>
+<div><input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted"></div>
+</div>
+<div>
+<div><label for="dateTimeFinished">End:</label></div>
+<div><input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished"></div>
+</div>
+<div>
+<div><label for="user">User:</label></div>
+<div><input type="text" id="user" name="user"></div>
+</div>
+<div>
+<div><input type="submit" value="Send"></div>
+</div>
+</form>
+</div>
