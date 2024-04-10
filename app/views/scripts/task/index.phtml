@@ -1,6 +1,8 @@
 <?php
+echo "<h1>Tasks</h1>";
+echo "<div class='tasks-container'>";
 
-foreach($this->message as $task){
+foreach ($this->message as $task) {
     echo "<div>";
     echo "<div>" . $task->id . "</div>";
     echo "<div>" . $task->name . "</div>";
@@ -8,5 +10,23 @@ foreach($this->message as $task){
     echo "<div>" . $task->dateTimeStarted . "</div>";
     echo "<div>" . $task->dateTimeFinished . "</div>";
     echo "<div>" . $task->user . "</div>";
+
+    // Update button
+    echo "<form action='/web/update' method='post'>";
+    echo "<input type='hidden' name='id' value='" . $task->id . "'>";
+    echo "<input type='submit' value='Update'>";
+    echo "</form>";
+
+    // Delete button
+    echo "<form action='/web/delete' method='post'>";
+    echo "<input type='hidden' name='id' value='" . $task->id . "'>";
+    echo "<input type='submit' value='Delete'>";
+    echo "</form>";
+
     echo "</div>";
 }
+
+echo "</div>";
+
+// Create Task button
+echo "<a href='/web/create'>Create Task</a>";
