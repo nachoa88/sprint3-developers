@@ -22,7 +22,7 @@ class Task
 
     }
 
-    public function getConnection()
+    public function getData()
     {
         $filename = '../web/db/tasks.json';
         $data = file_get_contents($filename); //data read from json file
@@ -33,9 +33,8 @@ class Task
     public function getAllTasks(): array
     {
         // Implement the logic to get all tasks
-        $db = $this->getConnection();
-        $result = json_decode($db); //decode data
-        $tasks = $result;
+        $data = $this->getData();
+        $tasks = json_decode($data, true); //decode data to an array
 
         return $tasks;
     }
@@ -49,7 +48,26 @@ class Task
     public function createTask()
     {
         // Implement the logic to create a new task in the database
-        return "Task created";
+
+        $data = $this->getData();
+        $tasks = json_decode($data, true); //decode data to an array
+
+        // Get last id
+        $last_item = end($tasks);
+        $last_item_id = $last_item['id'];   
+
+        // update id to last id + 1
+        $_POST['id'] = ++$last_item_id;
+
+        // add $_POST to $task array
+        $tasks[] = $_POST;
+        $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
+
+        // write to file
+        file_put_contents('../web/db/tasks.json', $jsonString, FILE_APPEND | LOCK_EX);
+        // $fp = fopen('../web/db/tasks.json', 'w');
+        // fwrite($fp, $jsonString);
+        // fclose($fp);       
     }
 
     public function updateTask()
