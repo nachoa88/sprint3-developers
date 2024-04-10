@@ -1,3 +1,24 @@
-<?php
+<h1>You're editing task Nº <?php echo $this->taskData['id']; ?></h1>
 
-echo $this->message;
+<form action="/web/update" method="post">
+    <input type="hidden" name="id" value="<?php echo $this->taskData['id']; ?>">
+
+    <label for="name">Name:</label>
+    <input type="text" name="name" value="<?php echo $this->taskData['name']; ?>">
+
+    <label for="status">Status:</label>
+    <input type="text" name="status" value="<?php echo $this->taskData['status']; ?>">
+
+    <label for="dateTimeStarted">Start Date:</label>
+    <input type="text" name="dateTimeStarted" value="<?php echo $this->taskData['dateTimeStarted']; ?>">
+
+    <label for="dateTimeFinished">Finish Date:</label>
+    <input type="text" name="dateTimeFinished" value="<?php echo $this->taskData['dateTimeFinished']; ?>">
+
+    <label for="user">User:</label>
+    <input type="text" name="user" value="<?php echo $this->taskData['user']; ?>">
+
+    <input type="submit" value="Update">
+</form>
+
+<a href="/web" class="button">Return</a>
