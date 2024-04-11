@@ -23,7 +23,7 @@ class TaskController extends Controller
     public function readTaskAction() {
         // Show a single task
         $taskModel = new Task(); 
-        $this->view->message = $taskModel->getAllTasks();
+        $this->view->message = $taskModel->getTaskById();
     }
 
     public function updateTaskAction() {
