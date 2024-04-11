@@ -59,7 +59,26 @@ class Task
     public function createTask()
     {
         // Implement the logic to create a new task in the database
-        return "Task created";
+        if(!$_POST['status']){
+            
+        }
+
+        $data = $this->getData();
+        $tasks = json_decode($data, true); //decode data to an array
+
+        // Get last id
+        $last_item = end($tasks);
+        $last_item_id = $last_item['id'];
+
+        // update id to last id + 1
+        $_POST['id'] = ++$last_item_id;
+
+        // add $_POST to $task array
+        $tasks[] = $_POST;
+        $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
+
+        // write to file
+        file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
     }
 
     public function updateTask(int $id, array $newData)
