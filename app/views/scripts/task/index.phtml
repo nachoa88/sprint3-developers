@@ -4,22 +4,22 @@ echo "<div class='tasks-container'>";
 
 foreach ($this->message as $task) {
     echo "<div>";
-    echo "<div>" . $task->id . "</div>";
-    echo "<div>" . $task->name . "</div>";
-    echo "<div>" . $task->status . "</div>";
-    echo "<div>" . $task->dateTimeStarted . "</div>";
-    echo "<div>" . $task->dateTimeFinished . "</div>";
-    echo "<div>" . $task->user . "</div>";
+    echo "<div>" . $task['id'] . "</div>";
+    echo "<div>" . $task['name'] . "</div>";
+    echo "<div>" . $task['status'] . "</div>";
+    echo "<div>" . $task['dateTimeStarted'] . "</div>";
+    echo "<div>" . $task['dateTimeFinished'] . "</div>";
+    echo "<div>" . $task['user'] . "</div>";
 
     // Update button
     echo "<form action='/web/update' method='post'>";
-    echo "<input type='hidden' name='id' value='" . $task->id . "'>";
+    echo "<input type='hidden' name='id' value='" . $task['id'] . "'>";
     echo "<input type='submit' value='Update'>";
     echo "</form>";
 
     // Delete button
     echo "<form action='/web/delete' method='post'>";
-    echo "<input type='hidden' name='id' value='" . $task->id . "'>";
+    echo "<input type='hidden' name='id' value='" . $task['id'] . "'>";
     echo "<input type='submit' value='Delete'>";
     echo "</form>";
 
