@@ -1,22 +1,7 @@
 <?php
 
-enum Status
-{
-    case Pending;
-    case InProgress;
-    case Finished;
-}
-
 class Task
 {
-    // properties that represent the data 
-    private int $id;
-    private string $name;
-    private Status $status;
-    private string $dateTimeStarted;
-    private string $dateTimeFinished;
-    private string $user;
-
     public function __construct()
     {
     }
@@ -28,7 +13,7 @@ class Task
         return $data;
     }
 
-    // CRUD
+    // CRUD Logic
     public function getAllTasks(): array
     {
         // Implement the logic to get all tasks
@@ -51,18 +36,13 @@ class Task
                 return $task;
             }
         }
-
+        
         // Return null if task not found
         return null;
     }
 
     public function createTask()
     {
-        // Implement the logic to create a new task in the database
-        if(!$_POST['status']){
-            
-        }
-
         $data = $this->getData();
         $tasks = json_decode($data, true); //decode data to an array
 
@@ -86,7 +66,7 @@ class Task
         // Read tasks from JSON file
         $data = $this->getData();
         $tasks = json_decode($data, true);
-        
+
         // Find task with given ID and update its data
         $updatedTask = null;
         // In PHP, foreach operates on a copy of the array, so we need to use 
@@ -100,7 +80,7 @@ class Task
         }
 
         // Write tasks back to JSON file
-        file_put_contents('../web/db/tasks.json', json_encode($tasks));
+        file_put_contents('../web/db/tasks.json', json_encode($tasks), JSON_PRETTY_PRINT);
 
         return $updatedTask;
     }
