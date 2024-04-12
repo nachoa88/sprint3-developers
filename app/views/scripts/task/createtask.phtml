@@ -3,11 +3,11 @@
 <input type="hidden" id="id" name="id">
 <div>
 <div><label for="name">Task:</label></div>
-<div><input type="text" id="name" name="name"></div>
+<div><input type="text" id="name" name="name" required value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>"></div>
 </div>
 <div>
 <div><label for="pendents">Pendents</label></div>
-<div><input type="radio" id="pendents" name="status" value="pendents"></div>
+<div><input type="radio" id="pendents" name="status" value="pendents" checked></div>
 <div><label for="en execució">En execució</label></div>
 <div><input type="radio" id="en execució" name="status" value="en execució"></div>
 <div><label for="acabades">Acabades</label></div>
@@ -15,15 +15,15 @@
 </div>
 <div>
 <div><label for="dateTimeStarted">Start:</label></div>
-<div><input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted"></div>
+<div><input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted" value="<?php echo isset($_POST['dateTimeStarted']) ? $_POST['dateTimeStarted'] : ''; ?>"></div>
 </div>
 <div>
 <div><label for="dateTimeFinished">End:</label></div>
-<div><input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished"></div>
+<div><input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished" value="<?php echo isset($_POST['dateTimeFinished']) ? $_POST['dateTimeFinished'] : ''; ?>"></div>
 </div>
 <div>
 <div><label for="user">User:</label></div>
-<div><input type="text" id="user" name="user"></div>
+<div><input type="text" id="user" name="user" required value="<?php echo isset($_POST['user']) ? $_POST['user'] : ''; ?>"></div>
 </div>
 <div>
 <div><input type="submit" value="Send"></div>

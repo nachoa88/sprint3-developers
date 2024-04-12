@@ -47,14 +47,9 @@ class Task
         // Decode data to an array
         $tasks = json_decode($data, true);
 
-        // We validate that start date is anterior to finish date.
-        if ($_POST['dateTimeFinished'] && $_POST['dateTimeFinished'] < $_POST['dateTimeStarted']) {
-            // If not, validation is set to false.
-            $_SESSION['validateForm'] = false;
-            echo "¡La fecha de finalización es anterior a la fecha de principio!";
-        } else {
-            // If validated, we set the flag true and proceed.
-            $_SESSION['validateForm'] = true;
+
+        if ($this->validateForm($_POST)) {
+
             // Get last id
             $last_item = end($tasks);
             $last_item_id = $last_item['id'];
@@ -67,8 +62,7 @@ class Task
             $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
 
             // write to file
-            file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
-
+            //file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
         }
     }
 
@@ -100,5 +94,22 @@ class Task
     {
         // Implement the logic to delete a task from the database
         return "Task deleted";
+    }
+
+    public function validateForm($form): bool
+    {
+        // We validate that start date is anterior to finish date.
+        if ($form['dateTimeFinished'] && $form['dateTimeFinished'] < $form['dateTimeStarted']) {
+            // If not, validation is set to false.
+
+            // $_SESSION['validateForm'] = false;
+            echo "¡La fecha de finalización es anterior a la fecha de principio!";
+            return false;
+        } else {
+
+            // If validated, we set the flag true and proceed.
+            // $_SESSION['validateForm'] = true;
+            return true;
+        }
     }
 }

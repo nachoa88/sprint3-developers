@@ -2,6 +2,16 @@
 
 class TaskController extends Controller
 {
+    private bool $validateForm;
+
+	public function setValidateForm($validateForm)
+	{
+		$this->validateForm = $validateForm;
+
+		return $this;
+	}
+
+    
     public function indexAction()
     {
         // Get all tasks and display them
@@ -20,7 +30,7 @@ class TaskController extends Controller
 
             // After form is validated and processed, we want to redirect to index.
             // If form is not validated the createtask view is called again.
-            if ($_SESSION['validateForm']) {
+            if ($taskModel->validateForm($_POST)) {
                 return header('Location: index');
             }
         }
