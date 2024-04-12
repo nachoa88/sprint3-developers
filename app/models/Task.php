@@ -36,7 +36,7 @@ class Task
                 return $task;
             }
         }
-        
+
         // Return null if task not found
         return null;
     }
@@ -44,21 +44,32 @@ class Task
     public function createTask()
     {
         $data = $this->getData();
-        $tasks = json_decode($data, true); //decode data to an array
+        // Decode data to an array
+        $tasks = json_decode($data, true);
 
-        // Get last id
-        $last_item = end($tasks);
-        $last_item_id = $last_item['id'];
+        // We validate that start date is anterior to finish date.
+        if ($_POST['dateTimeFinished'] && $_POST['dateTimeFinished'] < $_POST['dateTimeStarted']) {
+            // If not, validation is set to false.
+            $_SESSION['validateForm'] = false;
+            echo "¡La fecha de finalización es anterior a la fecha de principio!";
+        } else {
+            // If validated, we set the flag true and proceed.
+            $_SESSION['validateForm'] = true;
+            // Get last id
+            $last_item = end($tasks);
+            $last_item_id = $last_item['id'];
 
-        // update id to last id + 1
-        $_POST['id'] = ++$last_item_id;
+            // update id to last id + 1
+            $_POST['id'] = ++$last_item_id;
 
-        // add $_POST to $task array
-        $tasks[] = $_POST;
-        $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
+            // Add $_POST to $task array
+            $tasks[] = $_POST;
+            $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
 
-        // write to file
-        file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+            // write to file
+            file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+
+        }
     }
 
     public function updateTask(int $id, array $newData)

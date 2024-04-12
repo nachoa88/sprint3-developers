@@ -11,20 +11,25 @@ class TaskController extends Controller
 
     public function createTaskAction()
     {
-        // Show the form for creating a new task
-        if($_SERVER['REQUEST_METHOD'] == 'POST'){
+        // The method check if form is sent.
+        // If the form is sent, the method call to the createTask method of the model, witch process the form.
+        // If it's not, it's just call to createtask view witch contains the form.
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $taskModel = new Task();
             $taskModel->createTask();
 
-            // Redirect to index after the model does its work
-            return header('Location: index');
+            // After form is validated and processed, we want to redirect to index.
+            // If form is not validated the createtask view is called again.
+            if ($_SESSION['validateForm']) {
+                return header('Location: index');
+            }
         }
     }
 
     public function readTaskAction()
     {
         // Show a single task
-        $taskModel = new Task(); 
+        $taskModel = new Task();
         $this->view->message = $taskModel->getAllTasks();
     }
 
