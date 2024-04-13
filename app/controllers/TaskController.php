@@ -64,9 +64,6 @@ class TaskController extends Controller
             ];
             // Update task data.
             $this->view->taskData = $taskModel->updateTask($id, $newData);
-
-            // Redirect to index after the model does its work
-            return header('Location: index');
         } else {
             // If there is no updated task, display form with current task data.
             $this->view->taskData = $taskModel->getTaskById($id);
