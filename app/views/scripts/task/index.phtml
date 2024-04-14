@@ -1,8 +1,15 @@
-<h1 class="font-mono text-black font-bold underline uppercase underline-offset-8 decoration-purple-700 text-4xl mb-4">List of Tasks</h1>
+<h2 class="flex flex-row flex-nowrap items-center mt-24 uppercase">
+    <span class="flex-grow block border-t dark:border-purple-700"></span>
+    <span class="flex-none block mx-4 px-4 py-2.5 text-xl rounded leading-none font-medium bg-white dark:bg-gray-900 text-white">
+        List of Tasks
+    </span>
+    <span class="flex-grow block border-t dark:border-purple-700"></span>
+</h2>
 
-<div class="relative overflow-x-auto shadow-md sm:rounded-lg border-4 dark:border-purple-700">
+
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg border-2 dark:border-purple-700 mt-16">
     <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-200">
             <tr>
                 <th scope="col" class="px-6 py-3">ID</th>
                 <th scope="col" class="px-6 py-3">Name</th>
@@ -39,14 +46,14 @@
                     <td class="px-6 py-4">
                         <form action='update' method='post'>
                             <input type='hidden' name='id' value='<?php echo $task['id']; ?>'>
-                            <input type='submit' value='Update'>
+                            <input type='submit' value='Update' class="bg-purple-700 hover:bg-purple-900 text-white py-2 px-3 rounded cursor-pointer">
                         </form>
                     </td>
                     <!-- Delete Task button -->
                     <td class="px-6 py-4">
                         <form action='delete' method='post'>
                             <input type='hidden' name='id' value='<?php echo $task['id']; ?>'>
-                            <input type='submit' value='Delete'>
+                            <input type='submit' value='Delete' class="bg-red-700 hover:bg-red-900 text-white py-2 px-3 rounded cursor-pointer">
                         </form>
                     </td>
                 </tr>
