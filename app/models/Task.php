@@ -2,6 +2,14 @@
 
 class Task
 {
+
+    private int $id;
+    private string $name;
+    private string $status;
+    private string $dateTimeStarted;
+    private string $dateTimeFinished;
+    private string $user;
+
     public function __construct()
     {
     }
@@ -43,26 +51,40 @@ class Task
 
     public function createTask()
     {
-        $data = $this->getData();
-        // Decode data to an array
-        $tasks = json_decode($data, true);
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
+            // We sanitize and validate the form
+            if ($this->validateForm($_POST)) {
 
-        if ($this->validateForm($_POST)) {
+                // Get last id
+                $data = $this->getData();
+                $tasks = json_decode($data, true);
+                $last_item = end($tasks);
+                $last_item_id = $last_item['id'];
 
-            // Get last id
-            $last_item = end($tasks);
-            $last_item_id = $last_item['id'];
+                // update id to last id + 1
+                $this->id = ++$last_item_id;
 
-            // update id to last id + 1
-            $_POST['id'] = ++$last_item_id;
+                // Add fields to $newTask array
+                $newTask['id'] = $this->id;
+                $newTask['name'] = $this->name;
+                $newTask['status'] = $this->status;
+                $newTask['dateTimeStarted'] = $this->dateTimeStarted;
+                $newTask['dateTimeFinished'] = $this->dateTimeFinished;
+                $newTask['user'] = $this->user;
 
-            // Add $_POST to $task array
-            $tasks[] = $_POST;
-            $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
+                // Append newTask to tasks array
+                $tasks[] = $newTask;
 
-            // write to file
-            //file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+                // Encode task
+                $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
+
+                // write to file
+                file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+
+                // After form is validated and processed, we want to redirect to index.
+                return header('Location: index');
+            }
         }
     }
 
@@ -96,20 +118,50 @@ class Task
         return "Task deleted";
     }
 
-    public function validateForm($form): bool
+    public function validateForm($form)
     {
-        // We validate that start date is anterior to finish date.
-        if ($form['dateTimeFinished'] && $form['dateTimeFinished'] < $form['dateTimeStarted']) {
-            // If not, validation is set to false.
+        $this->name = $this->status = $this->dateTimeStarted = $this->dateTimeFinished = $this->user = "";
 
-            // $_SESSION['validateForm'] = false;
-            echo "¡La fecha de finalización es anterior a la fecha de principio!";
-            return false;
+        $this->name = $this->sanitize($_POST['name']);
+        $this->status = $this->sanitize($_POST['status']);
+        $this->dateTimeStarted = $this->sanitize($_POST['dateTimeStarted']);
+        $this->dateTimeFinished = $this->sanitize($_POST['dateTimeFinished']);
+        $this->user = $this->sanitize($_POST['user']);
+
+        // Validate that name is not empty
+        $nameErr = "";
+        if ($this->name == "") {
+            $nameErr = "Task no puede estar vacio" . "<br>";
+        }
+
+        // Validate that start date is anterior to finish date
+        $dateErr = "";
+        if ($this->dateTimeStarted && $this->dateTimeFinished < $this->dateTimeStarted) {
+            $dateErr = "La fecha de finalización es anterior a la fecha de principio" . "<br>";
+        }
+
+        // Validate that user is not empty
+        $userErr = "";
+        if ($this->user == "") {
+            $userErr = "User no puede estar vacio" . "<br>";
+        }
+
+        if ($nameErr != "" || $dateErr != "" || $userErr != "") {
+            echo "<b>Error:</b>" . "<br>";
+            echo $nameErr;
+            echo $dateErr;
+            echo $userErr;
+            echo "<br>";
         } else {
-
-            // If validated, we set the flag true and proceed.
-            // $_SESSION['validateForm'] = true;
             return true;
         }
+    }
+
+    public function sanitize($data): string
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
     }
 }
