@@ -1,32 +1,63 @@
-<?php
-echo "<h1>Tasks</h1>";
-echo "<div class='tasks-container'>";
+<h1 class="font-mono text-black font-bold underline uppercase underline-offset-8 decoration-purple-700 text-4xl mb-4">List of Tasks</h1>
 
-foreach ($this->message as $task) {
-    echo "<div>";
-    echo "<div>" . $task['id'] . "</div>";
-    echo "<div>" . $task['name'] . "</div>";
-    echo "<div>" . $task['status'] . "</div>";
-    echo "<div>" . $task['dateTimeStarted'] . "</div>";
-    echo "<div>" . $task['dateTimeFinished'] . "</div>";
-    echo "<div>" . $task['user'] . "</div>";
+<div class="relative overflow-x-auto shadow-md sm:rounded-lg border-4 dark:border-purple-700">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+                <th scope="col" class="px-6 py-3">ID</th>
+                <th scope="col" class="px-6 py-3">Name</th>
+                <th scope="col" class="px-6 py-3">Status</th>
+                <th scope="col" class="px-6 py-3">Start Time</th>
+                <th scope="col" class="px-6 py-3">Finish Time</th>
+                <th scope="col" class="px-6 py-3">User</th>
+                <th scope="col" class="px-6 py-3">Update</th>
+                <th scope="col" class="px-6 py-3">Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($this->message as $task) { ?>
+                <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                        <?php echo $task['id'] ?>
+                    </th>
+                    <td class="px-6 py-4">
+                        <?php echo $task['name'] ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo $task['status'] ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo $task['dateTimeStarted'] ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo $task['dateTimeFinished'] ?>
+                    </td>
+                    <td class="px-6 py-4">
+                        <?php echo $task['user'] ?>
+                    </td>
+                    <!-- Update Task button -->
+                    <td class="px-6 py-4">
+                        <form action='update' method='post'>
+                            <input type='hidden' name='id' value='<?php echo $task['id']; ?>'>
+                            <input type='submit' value='Update'>
+                        </form>
+                    </td>
+                    <!-- Delete Task button -->
+                    <td class="px-6 py-4">
+                        <form action='delete' method='post'>
+                            <input type='hidden' name='id' value='<?php echo $task['id']; ?>'>
+                            <input type='submit' value='Delete'>
+                        </form>
+                    </td>
+                </tr>
+            <?php } ?>
+        </tbody>
+    </table>
+</div>
 
-    // Update button
-    echo "<form action='update' method='post'>";
-    echo "<input type='hidden' name='id' value='" . $task['id'] . "'>";
-    echo "<input type='submit' value='Update'>";
-    echo "</form>";
-
-    // Delete button
-    echo "<form action='delete' method='post'>";
-    echo "<input type='hidden' name='id' value='" . $task['id'] . "'>";
-    echo "<input type='submit' value='Delete'>";
-    echo "</form>";
-
-    echo "</div>";
-}
-
-echo "</div>";
-
-// Create Task button
-echo "<a href='create'>Create Task</a>";
+<!-- Create Task button -->
+<a href='create' class="mt-4 relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+        Create Task
+    </span>
+</a>
