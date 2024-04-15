@@ -13,17 +13,27 @@
             <label for="name" class="block mb-1 text-sm font-medium text-white">Name:</label>
             <input type="text" id="name" name="name" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo $this->taskData['name']; ?>" required />
         </div>
-        <div class="mb-5">
-            <label for="status" class="block mb-1 text-sm font-medium text-white">Status:</label>
-            <input type="text" id="status" name="status" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo $this->taskData['status']; ?>" required />
+        <div class="mb-5 flex justify-between">
+            <div>
+                <label for="pendents" class="mb-1 text-sm font-medium text-white">Pendents</label>
+                <input type="radio" id="pendents" name="status" value="pendents" <?php echo $this->taskData['status'] == 'pendents' ? 'checked' : ''; ?>>
+            </div>
+            <div>
+                <label for="en execució" class="mb-1 text-sm font-medium text-white">En execució</label>
+                <input type="radio" id="en execució" name="status" value="en execució" <?php echo $this->taskData['status'] == 'en execució' ? 'checked' : ''; ?>>
+            </div>
+            <div>
+                <label for="acabades" class="mb-1 text-sm font-medium text-white">Acabades</label>
+                <input type="radio" id="acabades" name="status" value="acabades" <?php echo $this->taskData['status'] == 'acabades' ? 'checked' : ''; ?>>
+            </div>
         </div>
         <div class="mb-5">
             <label for="dateTimeStarted" class="block mb-1 text-sm font-medium text-white">Start Date:</label>
-            <input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo $this->taskData['dateTimeStarted']; ?>" required />
+            <input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo date('Y-m-d\TH:i', strtotime($this->taskData['dateTimeStarted'])); ?>" />
         </div>
         <div class="mb-5">
-            <label for="dateTimeFinished" class="block mb-1 text-sm font-medium text-white">Finish Date::</label>
-            <input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo $this->taskData['dateTimeFinished']; ?>" required />
+            <label for="dateTimeFinished" class="block mb-1 text-sm font-medium text-white">Finish Date:</label>
+            <input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo date('Y-m-d\TH:i', strtotime($this->taskData['dateTimeFinished'])); ?>" />
         </div>
         <div class="mb-5">
             <label for="user" class="block mb-1 text-sm font-medium text-white">User:</label>
@@ -38,9 +48,11 @@
                 </span>
             </a>
             <!-- Update button -->
-            <span class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
-                <input type="submit" value="Update" class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
-            </span>
+            <button type="submit" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
+                <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                    Update
+                </span>
+            </button>
         </div>
     </form>
 </div>

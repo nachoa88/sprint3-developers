@@ -33,35 +33,31 @@ class TaskController extends Controller
         }
     }
 
-    public function readTaskAction()
-    {
-        // Show a single task
-        $taskModel = new Task();
-        $this->view->message = $taskModel->getAllTasks();
-    }
-
     public function updateTaskAction()
     {
-        // Get ID from request, it's stored from the form in the index view.
-        $id = $_POST['id'];
-
-        // Create Task model
+        // Instanciate the model
         $taskModel = new Task();
-        // As this method is handling both the initial display of the form and the form submission,
-        // we need to check if the form has been submitted or not before proceeding.
-        // The form has been submitted if the request contains a 'name' parameter (or any other parameter that is required for the task)
-        if (!empty($_POST['name'])) {
-            // Get new data for task from request
-            $newData = [
-                'name' => $_POST['name'],
-                'status' => $_POST['status'],
-                'dateTimeStarted' => $_POST['dateTimeStarted'],
-                'dateTimeFinished' => $_POST['dateTimeFinished'],
-                'user' => $_POST['user'],
-            ];
-            // Update task data.
-            $this->view->taskData = $taskModel->updateTask($id, $newData);
+
+        // If form is sent, validate data and update task.
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            // Get ID from the submitted form, in the update view (hidden input field)
+            $id = $_POST['id'];
+            // Check if data is validated and retrieves $validatedData array
+            if ($validatedData = $this->validateForm($_POST)) {
+
+                // Pass validated data to the model
+                $taskModel->setName($validatedData['name']);
+                $taskModel->setStatus($validatedData['status']);
+                $taskModel->setDateTimeStarted($validatedData['dateTimeStarted']);
+                $taskModel->setDateTimeFinished($validatedData['dateTimeFinished']);
+                $taskModel->setUser($validatedData['user']);
+
+                // Update task data.
+                $this->view->taskData = $taskModel->updateTask($id, $validatedData);
+            }
         } else {
+            // Get ID from request, it's stored from the form button in the index view.
+            $id = $_GET['id'];
             // If there is no updated task, display form with current task data.
             $this->view->taskData = $taskModel->getTaskById($id);
         }

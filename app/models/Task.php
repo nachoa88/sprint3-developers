@@ -95,10 +95,14 @@ class Task
             }
         }
 
-        // Write tasks back to JSON file
-        file_put_contents('../web/db/tasks.json', json_encode($tasks), JSON_PRETTY_PRINT);
+        // Encode tasks
+        $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
 
-        return $updatedTask;
+        // Write tasks back to JSON file
+        file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+
+        // After form is validated and processed, we want to redirect to index.
+        return header('Location: index');
     }
 
     public function deleteTask()
