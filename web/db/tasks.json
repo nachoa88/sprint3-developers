@@ -22,13 +22,5 @@
         "dateTimeStarted": "2022-01-03T06:30:00Z",
         "dateTimeFinished": "2022-01-04T20:30:00Z",
         "user": "user3"
-    },
-    {
-        "id": 4,
-        "name": "new task",
-        "status": "pendents",
-        "dateTimeStarted": "",
-        "dateTimeFinished": "",
-        "user": "stef"
     }
 ]
