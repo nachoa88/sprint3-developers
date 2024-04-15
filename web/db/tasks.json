@@ -1,5 +1,5 @@
-{
-    "0": {
+[
+    {
         "id": 1,
         "name": "task 1",
         "status": "pendent",
@@ -7,7 +7,7 @@
         "dateTimeFinished": null,
         "user": "user1"
     },
-    "1": {
+    {
         "id": 2,
         "name": "task 2",
         "status": "en execuci\u00f3",
@@ -15,12 +15,20 @@
         "dateTimeFinished": null,
         "user": "user2"
     },
-    "2": {
+    {
         "id": 3,
         "name": "task 3",
         "status": "acabades",
         "dateTimeStarted": "2022-01-03T06:30:00Z",
         "dateTimeFinished": "2022-01-04T20:30:00Z",
         "user": "user3"
+    },
+    {
+        "id": 4,
+        "name": "new task",
+        "status": "pendents",
+        "dateTimeStarted": "",
+        "dateTimeFinished": "",
+        "user": "stef"
     }
-}
+]

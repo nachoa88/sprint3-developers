@@ -2,14 +2,8 @@
 
 class TaskController extends Controller
 {
-    private bool $validateForm;
 
-    public function setValidateForm($validateForm)
-    {
-        $this->validateForm = $validateForm;
-
-        return $this;
-    }
+    private array $validatedData = [];
 
     public function indexAction()
     {
@@ -22,9 +16,20 @@ class TaskController extends Controller
     {
         // Instanciate the model and pass the createTask method to the view
         $taskModel = new Task();
-        // $taskModel->createTask();
-        $tasks = $taskModel->createTask();
-        $this->view->message = $tasks;
+
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            if ($this->validateForm($_POST)) {
+
+                $taskModel->setName($this->validatedData['name']);
+                $taskModel->setStatus($this->validatedData['status']);
+                $taskModel->setDateTimeStarted($this->validatedData['dateTimeStarted']);
+                $taskModel->setDateTimeFinished($this->validatedData['dateTimeFinished']);
+                $taskModel->setUser($this->validatedData['user']);
+
+                $this->view->message = $taskModel->createTask();
+            }
+        }
     }
 
     public function readTaskAction()
@@ -66,5 +71,58 @@ class TaskController extends Controller
         // Delete a task
         $taskModel = new Task();
         $this->view->message = $taskModel->deleteTask();
+    }
+
+    public function validateForm($form)
+    {
+        // $name = $status = $dateTimeStarted = $dateTimeFinished = $user = "";
+
+        $name = $this->sanitize($form['name']);
+        $status = $this->sanitize($form['status']);
+        $dateTimeStarted = $this->sanitize($form['dateTimeStarted']);
+        $dateTimeFinished = $this->sanitize($form['dateTimeFinished']);
+        $user = $this->sanitize($form['user']);
+
+        // Validate that name is not empty
+        $nameErr = "";
+        if ($name == "") {
+            $nameErr = "Task no puede estar vacio" . "<br>";
+        }
+
+        // Validate that start date is anterior to finish date
+        $dateErr = "";
+        if ($dateTimeStarted && $dateTimeFinished < $dateTimeStarted) {
+            $dateErr = "La fecha de finalización es anterior a la fecha de principio" . "<br>";
+        }
+
+        // Validate that user is not empty
+        $userErr = "";
+        if ($user == "") {
+            $userErr = "User no puede estar vacio" . "<br>";
+        }
+
+        if ($nameErr != "" || $dateErr != "" || $userErr != "") {
+            echo "<b>Error:</b>" . "<br>";
+            echo $nameErr;
+            echo $dateErr;
+            echo $userErr;
+            echo "<br>";
+        } else {
+            $this->validatedData['name'] = $name;
+            $this->validatedData['status'] = $status;
+            $this->validatedData['dateTimeStarted'] = $dateTimeStarted;
+            $this->validatedData['dateTimeFinished'] = $dateTimeFinished;
+            $this->validatedData['user'] = $user;
+
+            return true;
+        }
+    }
+
+    public function sanitize($data): string
+    {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
     }
 }

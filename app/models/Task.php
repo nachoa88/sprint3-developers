@@ -2,7 +2,6 @@
 
 class Task
 {
-
     private int $id;
     private string $name;
     private string $status;
@@ -51,41 +50,32 @@ class Task
 
     public function createTask()
     {
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Get last id
+        $data = $this->getData();
+        $tasks = json_decode($data, true);
+        $last_item = end($tasks);
+        $last_item_id = $last_item['id'];
+        
+        // Pass model attributes to $newTask array
+        // update id to last id + 1
+        $newTask['id'] = ++$last_item_id;
+        $newTask['name'] = $this->name;
+        $newTask['status'] = $this->status;
+        $newTask['dateTimeStarted'] = $this->dateTimeStarted;
+        $newTask['dateTimeFinished'] = $this->dateTimeFinished;
+        $newTask['user'] = $this->user;
 
-            // We sanitize and validate the form
-            if ($this->validateForm($_POST)) {
+        // Append newTask to tasks array
+        $tasks[] = $newTask;
 
-                // Get last id from existing tasks
-                $data = $this->getData();
-                $tasks = json_decode($data, true);
-                $last_item = end($tasks);
-                $last_item_id = $last_item['id'];
+        // Encode task
+        $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
 
-                // update id to last id + 1
-                $this->id = ++$last_item_id;
+        // write to file
+        file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
 
-                // Add fields to $newTask array
-                $newTask['id'] = $this->id;
-                $newTask['name'] = $this->name;
-                $newTask['status'] = $this->status;
-                $newTask['dateTimeStarted'] = $this->dateTimeStarted;
-                $newTask['dateTimeFinished'] = $this->dateTimeFinished;
-                $newTask['user'] = $this->user;
-
-                // Append newTask to tasks array
-                $tasks[] = $newTask;
-
-                // Encode task
-                $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
-
-                // write to file
-                //file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
-
-                // After form is validated and processed, we want to redirect to index.
-                return header('Location: index');
-            }
-        }
+        // After form is validated and processed, we want to redirect to index.
+        return header('Location: index');
     }
 
     public function updateTask(int $id, array $newData)
@@ -118,50 +108,75 @@ class Task
         return "Task deleted";
     }
 
-    public function validateForm($form)
+    public function getId()
     {
-        $this->name = $this->status = $this->dateTimeStarted = $this->dateTimeFinished = $this->user = "";
-
-        $this->name = $this->sanitize($_POST['name']);
-        $this->status = $this->sanitize($_POST['status']);
-        $this->dateTimeStarted = $this->sanitize($_POST['dateTimeStarted']);
-        $this->dateTimeFinished = $this->sanitize($_POST['dateTimeFinished']);
-        $this->user = $this->sanitize($_POST['user']);
-
-        // Validate that name is not empty
-        $nameErr = "";
-        if ($this->name == "") {
-            $nameErr = "Task no puede estar vacio" . "<br>";
-        }
-
-        // Validate that start date is anterior to finish date
-        $dateErr = "";
-        if ($this->dateTimeStarted && $this->dateTimeFinished < $this->dateTimeStarted) {
-            $dateErr = "La fecha de finalización es anterior a la fecha de principio" . "<br>";
-        }
-
-        // Validate that user is not empty
-        $userErr = "";
-        if ($this->user == "") {
-            $userErr = "User no puede estar vacio" . "<br>";
-        }
-
-        if ($nameErr != "" || $dateErr != "" || $userErr != "") {
-            echo "<b>Error:</b>" . "<br>";
-            echo $nameErr;
-            echo $dateErr;
-            echo $userErr;
-            echo "<br>";
-        } else {
-            return true;
-        }
+        return $this->id;
     }
 
-    public function sanitize($data): string
+    public function setId($id)
     {
-        $data = trim($data);
-        $data = stripslashes($data);
-        $data = htmlspecialchars($data);
-        return $data;
+        $this->id = $id;
+
+        return $this;
+    }
+
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDateTimeStarted()
+    {
+        return $this->dateTimeStarted;
+    }
+
+    public function setDateTimeStarted($dateTimeStarted)
+    {
+        $this->dateTimeStarted = $dateTimeStarted;
+
+        return $this;
+    }
+
+    public function getDateTimeFinished()
+    {
+        return $this->dateTimeFinished;
+    }
+
+    public function setDateTimeFinished($dateTimeFinished)
+    {
+        $this->dateTimeFinished = $dateTimeFinished;
+
+        return $this;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
     }
 }
