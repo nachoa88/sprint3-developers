@@ -2,9 +2,6 @@
 
 class TaskController extends Controller
 {
-
-    private array $validatedData = [];
-
     public function indexAction()
     {
         // Get all tasks and display them
@@ -14,19 +11,23 @@ class TaskController extends Controller
 
     public function createTaskAction()
     {
-        // Instanciate the model and pass the createTask method to the view
-        $taskModel = new Task();
-
+        // If form is sent
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-            if ($this->validateForm($_POST)) {
+            // Check if data is validated and retrieves $validatedData array
+            if ($validatedData = $this->validateForm($_POST)) {
 
-                $taskModel->setName($this->validatedData['name']);
-                $taskModel->setStatus($this->validatedData['status']);
-                $taskModel->setDateTimeStarted($this->validatedData['dateTimeStarted']);
-                $taskModel->setDateTimeFinished($this->validatedData['dateTimeFinished']);
-                $taskModel->setUser($this->validatedData['user']);
+                // Instanciate the model
+                $taskModel = new Task();
 
+                // Pass validated data to the model
+                $taskModel->setName($validatedData['name']);
+                $taskModel->setStatus($validatedData['status']);
+                $taskModel->setDateTimeStarted($validatedData['dateTimeStarted']);
+                $taskModel->setDateTimeFinished($validatedData['dateTimeFinished']);
+                $taskModel->setUser($validatedData['user']);
+
+                // Call the method
                 $this->view->message = $taskModel->createTask();
             }
         }
@@ -75,7 +76,7 @@ class TaskController extends Controller
 
     public function validateForm($form)
     {
-        // $name = $status = $dateTimeStarted = $dateTimeFinished = $user = "";
+        $validatedData = [];
 
         $name = $this->sanitize($form['name']);
         $status = $this->sanitize($form['status']);
@@ -86,35 +87,37 @@ class TaskController extends Controller
         // Validate that name is not empty
         $nameErr = "";
         if ($name == "") {
-            $nameErr = "Task no puede estar vacio" . "<br>";
+            $nameErr = "Task can't be empty" . "<br>";
         }
 
         // Validate that start date is anterior to finish date
         $dateErr = "";
         if ($dateTimeStarted && $dateTimeFinished < $dateTimeStarted) {
-            $dateErr = "La fecha de finalización es anterior a la fecha de principio" . "<br>";
+            $dateErr = "Finish time is before start time" . "<br>";
         }
 
         // Validate that user is not empty
         $userErr = "";
         if ($user == "") {
-            $userErr = "User no puede estar vacio" . "<br>";
+            $userErr = "User can't be empty" . "<br>";
         }
 
         if ($nameErr != "" || $dateErr != "" || $userErr != "") {
+            // Display errors
             echo "<b>Error:</b>" . "<br>";
             echo $nameErr;
             echo $dateErr;
             echo $userErr;
             echo "<br>";
         } else {
-            $this->validatedData['name'] = $name;
-            $this->validatedData['status'] = $status;
-            $this->validatedData['dateTimeStarted'] = $dateTimeStarted;
-            $this->validatedData['dateTimeFinished'] = $dateTimeFinished;
-            $this->validatedData['user'] = $user;
+            // If no error, return an array with validated data
+            $validatedData['name'] = $name;
+            $validatedData['status'] = $status;
+            $validatedData['dateTimeStarted'] = $dateTimeStarted;
+            $validatedData['dateTimeFinished'] = $dateTimeFinished;
+            $validatedData['user'] = $user;
 
-            return true;
+            return $validatedData;
         }
     }
 

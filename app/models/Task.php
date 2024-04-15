@@ -54,21 +54,20 @@ class Task
         $data = $this->getData();
         $tasks = json_decode($data, true);
         $last_item = end($tasks);
-        $last_item_id = $last_item['id'];
-        
-        // Pass model attributes to $newTask array
+        $this->id = ++$last_item['id'];
+
+        // Append model attributes to tasks array
         // update id to last id + 1
-        $newTask['id'] = ++$last_item_id;
-        $newTask['name'] = $this->name;
-        $newTask['status'] = $this->status;
-        $newTask['dateTimeStarted'] = $this->dateTimeStarted;
-        $newTask['dateTimeFinished'] = $this->dateTimeFinished;
-        $newTask['user'] = $this->user;
+        $tasks[] = [
+            'id' => $this->id,
+            'name' => $this->name,
+            'status' => $this->status,
+            'dateTimeStarted' => $this->dateTimeStarted,
+            'dateTimeFinished' => $this->dateTimeFinished,
+            'user' => $this->user
+        ];
 
-        // Append newTask to tasks array
-        $tasks[] = $newTask;
-
-        // Encode task
+        // Encode tasks
         $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
 
         // write to file
