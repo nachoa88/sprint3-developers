@@ -1,27 +1,27 @@
 <form action="create" method="post">
-<input type="hidden" id="id" name="id">
+    <input type="hidden" id="id" name="id">
 
-<label for="name">Task:</label>
-<input type="text" id="name" name="name" value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>">
+    <label for="name">Task:</label>
+    <input type="text" id="name" name="name" value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>">
 
-<label for="pendents">Pendents</label>
-<input type="radio" id="pendents" name="status" value="pendents" checked>
+    <label for="pendents">Pendents</label>
+    <input type="radio" id="pendents" name="status" <?php echo isset($_POST['status']) && $_POST['status'] == 'pendents' ? 'checked' : 'checked'; ?> value="pendents">
 
-<label for="en execució">En execució</label>
-<input type="radio" id="en execució" name="status" value="en execució">
+    <label for="en execució">En execució</label>
+    <input type="radio" id="en execució" name="status" <?php echo isset($_POST['status']) && $_POST['status'] == 'en execució' ? 'checked' : ''; ?> value="en execució">
 
-<label for="acabades">Acabades</label>
-<input type="radio" id="acabades" name="status" value="acabades">
+    <label for="acabades">Acabades</label>
+    <input type="radio" id="acabades" name="status" <?php echo isset($_POST['status']) && $_POST['status'] == 'acabades' ? 'checked' : ''; ?> value="acabades">
 
-<label for="dateTimeStarted">Start:</label>
-<input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted" value="<?php echo isset($_POST['dateTimeStarted']) ? $_POST['dateTimeStarted'] : ''; ?>">
+    <label for="dateTimeStarted">Start:</label>
+    <input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted" value="<?php echo isset($_POST['dateTimeStarted']) ? $_POST['dateTimeStarted'] : ''; ?>">
 
-<label for="dateTimeFinished">End:</label>
-<input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished" value="<?php echo isset($_POST['dateTimeFinished']) ? $_POST['dateTimeFinished'] : ''; ?>">
+    <label for="dateTimeFinished">End:</label>
+    <input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished" value="<?php echo isset($_POST['dateTimeFinished']) ? $_POST['dateTimeFinished'] : ''; ?>">
 
-<label for="user">User:</label>
-<input type="text" id="user" name="user" value="<?php echo isset($_POST['user']) ? $_POST['user'] : ''; ?>">
+    <label for="user">User:</label>
+    <input type="text" id="user" name="user" value="<?php echo isset($_POST['user']) ? $_POST['user'] : ''; ?>">
 
-<input type="submit" value="Send">
+    <input type="submit" value="Send">
 
 </form>

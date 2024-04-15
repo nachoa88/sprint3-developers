@@ -56,7 +56,7 @@ class Task
             // We sanitize and validate the form
             if ($this->validateForm($_POST)) {
 
-                // Get last id
+                // Get last id from existing tasks
                 $data = $this->getData();
                 $tasks = json_decode($data, true);
                 $last_item = end($tasks);
@@ -80,7 +80,7 @@ class Task
                 $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
 
                 // write to file
-                file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+                //file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
 
                 // After form is validated and processed, we want to redirect to index.
                 return header('Location: index');
