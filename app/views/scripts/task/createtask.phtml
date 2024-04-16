@@ -11,7 +11,7 @@
         <input type="hidden" id="id" name="id">
         <div class="mb-5">
             <label for="name" class="block mb-1 text-sm font-medium text-white">Task:</label>
-            <input type="text" id="name" name="name" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>">
+            <input type="text" id="name" name="name" class="text-sm rounded-lg block w-full p-2 bg-gray-900 text-white" value="<?php echo isset($_POST['name']) ? $_POST['name'] : ''; ?>">
         </div>
         <div class="mb-5 flex justify-between">
             <div>
@@ -29,20 +29,20 @@
         </div>
         <div class="mb-5">
             <label for="dateTimeStarted" class="block mb-1 text-sm font-medium text-white">Start:</label>
-            <input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo isset($_POST['dateTimeStarted']) ? $_POST['dateTimeStarted'] : ''; ?>">
+            <input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted" class="text-sm rounded-lg block w-full p-2 bg-gray-900 text-white" value="<?php echo isset($_POST['dateTimeStarted']) ? $_POST['dateTimeStarted'] : ''; ?>">
         </div>
         <div class="mb-5">
             <label for="dateTimeFinished" class="block mb-1 text-sm font-medium text-white">End:</label>
-            <input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo isset($_POST['dateTimeFinished']) ? $_POST['dateTimeFinished'] : ''; ?>">
+            <input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished" class="text-sm rounded-lg block w-full p-2 bg-gray-900 text-white" value="<?php echo isset($_POST['dateTimeFinished']) ? $_POST['dateTimeFinished'] : ''; ?>">
         </div>
         <div class="mb-5">
             <label for="user" class="block mb-1 text-sm font-medium text-white">User:</label>
-            <input type="text" id="user" name="user" class="text-sm rounded-lg block w-full p-2 dark:bg-gray-900 dark:text-white" value="<?php echo isset($_POST['user']) ? $_POST['user'] : ''; ?>">
+            <input type="text" id="user" name="user" class="text-sm rounded-lg block w-full p-2 bg-gray-900 text-white" value="<?php echo isset($_POST['user']) ? $_POST['user'] : ''; ?>">
         </div>
 
         <div class="flex justify-between mt-5">
             <!-- Return button -->
-            <a href="/web" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
+            <a href="index" class="relative inline-flex items-center justify-center p-0.5 overflow-hidden text-sm font-medium text-white rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white focus:ring-4 focus:outline-none focus:ring-blue-800">
                 <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-900 rounded-md group-hover:bg-opacity-0">
                     Return
                 </span>

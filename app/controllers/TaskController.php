@@ -85,28 +85,28 @@ class TaskController extends Controller
         // Validate that name is not empty
         $nameErr = "";
         if ($name == "") {
-            $nameErr = "Task can't be empty" . "<br>";
+            $nameErr = "Task can't be empty. ";
         }
 
         // Validate that start date is anterior to finish date
         $dateErr = "";
         if ($dateTimeStarted && $dateTimeFinished < $dateTimeStarted) {
-            $dateErr = "Finish time is before start time" . "<br>";
+            $dateErr = "Finish time is before start time. ";
         }
 
         // Validate that user is not empty
         $userErr = "";
         if ($user == "") {
-            $userErr = "User can't be empty" . "<br>";
+            $userErr = "User can't be empty. ";
         }
 
         if ($nameErr != "" || $dateErr != "" || $userErr != "") {
             // Display errors
-            echo "<b>Error:</b>" . "<br>";
+            echo "<div class='flex items-center justify-center text-white bg-red-700'>Error: ";
             echo $nameErr;
             echo $dateErr;
             echo $userErr;
-            echo "<br>";
+            echo "</div>";
         } else {
             // If no error, return an array with validated data
             $validatedData['name'] = $name;
