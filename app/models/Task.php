@@ -54,6 +54,7 @@ class Task
         $data = $this->getData();
         $tasks = json_decode($data, true);
         $last_item = end($tasks);
+
         $this->id = ++$last_item['id'];
 
         // Append model attributes to tasks array
@@ -105,10 +106,29 @@ class Task
         return header('Location: index');
     }
 
-    public function deleteTask()
+    public function deleteTask(int $id)
     {
-        // Implement the logic to delete a task from the database
-        return "Task deleted";
+        // Get the data
+        $data = $this->getData();
+        $tasks = json_decode($data, true);
+
+        // Loop thru all tasks
+        foreach ($tasks as $key => $task) {
+            // Find the task by $id
+            if ($task['id'] === $id) {
+                // Delete task by $key from the array
+                unset($tasks[$key]);
+            }
+        }
+
+        // Encode resulting tasks array
+        $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
+
+        // write to file
+        file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+
+        // Return to to index
+        return header('Location: index');
     }
 
     public function getId()

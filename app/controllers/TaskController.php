@@ -1,5 +1,4 @@
 <?php
-
 class TaskController extends Controller
 {
     public function indexAction()
@@ -65,9 +64,12 @@ class TaskController extends Controller
 
     public function deleteTaskAction()
     {
-        // Delete a task
+        // Get ID from request
+        $id = $_POST['id'];
+
+        // Delete Task model
         $taskModel = new Task();
-        $this->view->message = $taskModel->deleteTask();
+        $this->view->message = $taskModel->deleteTask($id);
     }
 
     public function validateForm($form)
