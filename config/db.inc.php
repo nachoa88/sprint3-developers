@@ -5,7 +5,8 @@
  */
  
 // parses the settings file
-$settings = parse_ini_file('settings.ini', true);
+// $settings = parse_ini_file('settings_nacho.ini', true);
+$settings = parse_ini_file('settings_stef.ini', true);
 
 // starts the connection to the database
 $dbh = new PDO(
