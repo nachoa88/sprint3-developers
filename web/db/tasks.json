@@ -2,7 +2,7 @@
     {
         "id": 1,
         "name": "task 1",
-        "status": "pendent",
+        "status": "pendents",
         "dateTimeStarted": "2022-01-01T10:00:00Z",
         "dateTimeFinished": null,
         "user": "user1"
