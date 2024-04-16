@@ -56,9 +56,10 @@
                     </td>
                     <!-- Delete Task button -->
                     <td class="px-6 py-4">
-                        <form action='delete' method='post'>
+                        <form id='deleteForm' action='delete' method='post'>
+                            <input type='hidden' name='result' id='result'>
                             <input type='hidden' name='id' value='<?php echo $task['id']; ?>'>
-                            <input type='submit' value='Delete' class="bg-red-700 hover:bg-red-900 text-white py-2 px-3 rounded cursor-pointer">
+                            <input type='submit' value='Delete' class="bg-red-700 hover:bg-red-900 text-white py-2 px-3 rounded cursor-pointer" onclick="return myFunction()">
                         </form>
                     </td>
                 </tr>
