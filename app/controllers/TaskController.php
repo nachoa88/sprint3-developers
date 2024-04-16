@@ -84,7 +84,7 @@ class TaskController extends Controller
 
         // Validate that name is not empty
         $nameErr = "";
-        if ($name == "") {
+        if ($name == null) {
             $nameErr = "Task can't be empty. ";
         }
 
@@ -96,7 +96,7 @@ class TaskController extends Controller
 
         // Validate that user is not empty
         $userErr = "";
-        if ($user == "") {
+        if ($user == null) {
             $userErr = "User can't be empty. ";
         }
 
@@ -119,11 +119,15 @@ class TaskController extends Controller
         }
     }
 
-    public function sanitize($data): string
+    public function sanitize($data)
     {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
+        // If form return empty string, convert to null value to match MySql field types
+        if($data == ''){
+            $data = null;
+        }
         return $data;
     }
 }

@@ -33,7 +33,7 @@
                         <?php echo $task['status'] ?>
                     </td>
                     <td class="px-6 py-4">
-                        <?php if ($task['dateTimeStarted'] !== "") {
+                        <?php if ($task['dateTimeStarted'] !== null) {
                             $date = new DateTime($task['dateTimeStarted']);
                             echo $date->format('d-m-Y H:i');
                         } else {
@@ -41,7 +41,7 @@
                         } ?>
                     </td>
                     <td class="px-6 py-4">
-                        <?php if ($task['dateTimeFinished'] !== "") {
+                        <?php if ($task['dateTimeFinished'] !== null) {
                             $date = new DateTime($task['dateTimeFinished']);
                             echo $date->format('d-m-Y H:i');
                         } else {

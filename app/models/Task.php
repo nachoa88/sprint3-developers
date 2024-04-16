@@ -1,78 +1,55 @@
 <?php
+require_once '../config/db.inc.php';
 
 class Task
 {
+    private $mysqli;
+
     private int $id;
-    private string $name;
-    private string $status;
-    private string $dateTimeStarted;
-    private string $dateTimeFinished;
-    private string $user;
+    private $name;
+    private $status;
+    private $dateTimeStarted;
+    private $dateTimeFinished;
+    private $user;
 
     public function __construct()
     {
-    }
-
-    public function getData()
-    {
-        $filename = '../web/db/tasks.json';
-        $data = file_get_contents($filename); //data read from json file
-        return $data;
+        $db = new Db();
+        $this->mysqli = $db->getConnection();
     }
 
     // CRUD Logic
-    public function getAllTasks(): array
+    public function getAllTasks()
     {
-        // Implement the logic to get all tasks
-        $data = $this->getData();
-        $tasks = json_decode($data, true); //decode data to an array
-
-        return $tasks;
+        $query = "SELECT * FROM task";
+        $result = $this->mysqli->query($query);
+        return $result;
     }
 
     public function getTaskById(int $id)
     {
-        // Read tasks from JSON file
-        $data = $this->getData();
-        $tasks = json_decode($data, true);
+        $query = "SELECT * FROM task WHERE id = $id";
+        $result = $this->mysqli->query($query);
 
-        // Find task with given ID
-        foreach ($tasks as $task) {
-            if ($task['id'] === $id) {
-                // If found, return and exits function. (return always exists the current function)
-                return $task;
-            }
-        }
-
-        // Return null if task not found
-        return null;
+        $task = $result->fetch_assoc();
+        return $task;
     }
 
     public function createTask()
     {
-        // Get last id
-        $data = $this->getData();
-        $tasks = json_decode($data, true);
-        $last_item = end($tasks);
+        // Prepare statement, stage 1: prepare
+        $sql = "INSERT INTO task(name, status, dateTimeStarted, dateTimeFinished, user) VALUES (?, ?, ?, ?, ?)";
+        $stmt = $this->mysqli->prepare($sql);
 
-        $this->id = ++$last_item['id'];
+        // Prepare statement, stage 2: bind and execute
+        $name = $this->name;
+        $status = $this->status;
+        $dateTimeStarted = $this->dateTimeStarted;
+        $dateTimeFinished = $this->dateTimeFinished;
+        $user = $this->user;
 
-        // Append model attributes to tasks array
-        // update id to last id + 1
-        $tasks[] = [
-            'id' => $this->id,
-            'name' => $this->name,
-            'status' => $this->status,
-            'dateTimeStarted' => $this->dateTimeStarted,
-            'dateTimeFinished' => $this->dateTimeFinished,
-            'user' => $this->user
-        ];
-
-        // Encode tasks
-        $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
-
-        // write to file
-        file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+        $stmt->bind_param("sssss", $name, $status, $dateTimeStarted, $dateTimeFinished, $user);
+        $stmt->execute();
 
         // After form is validated and processed, we want to redirect to index.
         return header('Location: index');
@@ -80,27 +57,20 @@ class Task
 
     public function updateTask(int $id, array $newData)
     {
-        // Read tasks from JSON file
-        $data = $this->getData();
-        $tasks = json_decode($data, true);
+        // Prepare statement, stage 1: prepare
+        $sql = "UPDATE task SET name = ?, status = ?, dateTimeStarted = ?, dateTimeFinished = ?, user = ? WHERE id = ?";
+        $stmt = $this->mysqli->prepare($sql);
 
-        // Find task with given ID and update its data
-        $updatedTask = null;
-        // In PHP, foreach operates on a copy of the array, so we need to use 
-        // a reference to update the original array, this is done by using the & operator.
-        foreach ($tasks as &$task) {
-            if ($task['id'] === $id) {
-                $task = array_merge($task, $newData);
-                $updatedTask = $task;
-                break;
-            }
-        }
+        // Prepare statement, stage 2: bind and execute
+        $id = $id;
+        $name = $this->name;
+        $status = $this->status;
+        $dateTimeStarted = $this->dateTimeStarted;
+        $dateTimeFinished = $this->dateTimeFinished;
+        $user = $this->user;
 
-        // Encode tasks
-        $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
-
-        // Write tasks back to JSON file
-        file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+        $stmt->bind_param("sssssi", $name, $status, $dateTimeStarted, $dateTimeFinished, $user, $id);
+        $stmt->execute();
 
         // After form is validated and processed, we want to redirect to index.
         return header('Location: index');
@@ -108,24 +78,8 @@ class Task
 
     public function deleteTask(int $id)
     {
-        // Get the data
-        $data = $this->getData();
-        $tasks = json_decode($data, true);
-
-        // Loop thru all tasks
-        foreach ($tasks as $key => $task) {
-            // Find the task by $id
-            if ($task['id'] === $id) {
-                // Delete task by $key from the array
-                unset($tasks[$key]);
-            }
-        }
-
-        // Encode resulting tasks array
-        $jsonString = json_encode($tasks, JSON_PRETTY_PRINT);
-
-        // write to file
-        file_put_contents('../web/db/tasks.json', $jsonString, LOCK_EX);
+        $query = "DELETE FROM task WHERE id = $id";
+        $this->mysqli->query($query);
 
         // Return to to index
         return header('Location: index');
