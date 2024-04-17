@@ -1,26 +1,34 @@
 <?php
 
+require_once __DIR__ . '/../vendor/autoload.php';
+
 class Db
 {
-  private $mysqli;
+  private $db;
+  // No se si es necesario tener el cliente, pero lo dejo por si acaso.
+  private $client;
 
   public function __construct()
   {
-    // parses the settings file
-    // $settings = parse_ini_file('settings_nacho.ini', true);
-    $settings = parse_ini_file('settings_stef.ini', true);
+    // Parses the settings file
+    $settings = parse_ini_file('settings_nacho.ini', true);
+    // $settings = parse_ini_file('settings_stef.ini', true);
 
-    // starts the connection to the database
-    $this->mysqli = new mysqli(
-      $settings['database']['host'],
-      $settings['database']['user'],
-      $settings['database']['password'],
-      $settings['database']['dbname']
-    );
+    // Starts the connection to the database
+    $this->client = new MongoDB\Client("mongodb://" . $settings['database']['host'] . ":27017");
+
+    // Select a database
+    $this->db = $this->client->selectDatabase($settings['database']['dbname']);
   }
 
   public function getConnection()
   {
-    return $this->mysqli;
+    return $this->db;
+  }
+
+  // Si no es necesario, borrar.
+  public function getClient()
+  {
+    return $this->client;
   }
 }
