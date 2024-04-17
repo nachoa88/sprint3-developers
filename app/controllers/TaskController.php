@@ -36,11 +36,13 @@ class TaskController extends Controller
     {
         // Instanciate the model
         $taskModel = new Task();
-
+        $taskId = $_POST['id'];
+        $this->view->taskData = $taskModel->getTaskById($taskId);
+        
         // If form is sent, validate data and update task.
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Get ID from the submitted form, in the update view (hidden input field)
-            $id = $_POST['id'];
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateButton'])) {
+            // Get ID from the POST submitted form, in the update view (hidden input field)
+            // $id = $_POST['id'];
             // Check if data is validated and retrieves $validatedData array
             if ($validatedData = $this->validateForm($_POST)) {
 
@@ -51,14 +53,9 @@ class TaskController extends Controller
                 $taskModel->setDateTimeFinished($validatedData['dateTimeFinished']);
                 $taskModel->setUser($validatedData['user']);
 
-                // Update task data.
-                $this->view->taskData = $taskModel->updateTask($id, $validatedData);
+                // Update task data. Get ID from the POST submitted form, in the update view (hidden input field)
+                $this->view->taskData = $taskModel->updateTask($_POST['id'], $validatedData);
             }
-        } else {
-            // Get ID from request, it's stored from the form button in the index view.
-            $id = $_GET['id'];
-            // If there is no updated task, display form with current task data.
-            $this->view->taskData = $taskModel->getTaskById($id);
         }
     }
 
@@ -84,19 +81,19 @@ class TaskController extends Controller
 
         // Validate that name is not empty
         $nameErr = "";
-        if ($name == "") {
+        if ($name == null) {
             $nameErr = "Task can't be empty. ";
         }
 
         // Validate that start date is anterior to finish date
         $dateErr = "";
-        if ($dateTimeStarted && $dateTimeFinished < $dateTimeStarted) {
+        if ($dateTimeStarted && $dateTimeFinished < $dateTimeStarted && $dateTimeFinished != null) {
             $dateErr = "Finish time is before start time. ";
         }
 
         // Validate that user is not empty
         $userErr = "";
-        if ($user == "") {
+        if ($user == null) {
             $userErr = "User can't be empty. ";
         }
 
@@ -119,11 +116,15 @@ class TaskController extends Controller
         }
     }
 
-    public function sanitize($data): string
+    public function sanitize($data)
     {
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
+        // If form return empty string, convert to null value to match MySql field types
+        if($data == ''){
+            $data = null;
+        }
         return $data;
     }
 }

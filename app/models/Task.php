@@ -3,11 +3,11 @@
 class Task
 {
     private int $id;
-    private string $name;
-    private string $status;
-    private string $dateTimeStarted;
-    private string $dateTimeFinished;
-    private string $user;
+    private $name;
+    private $status;
+    private $dateTimeStarted;
+    private $dateTimeFinished;
+    private $user;
 
     public function __construct()
     {

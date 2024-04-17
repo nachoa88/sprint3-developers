@@ -3,24 +3,24 @@
         "id": 1,
         "name": "task 1",
         "status": "pendents",
-        "dateTimeStarted": "2022-01-01T10:00:00Z",
-        "dateTimeFinished": "",
+        "dateTimeStarted": "2022-01-01T10:00:00",
+        "dateTimeFinished": null,
         "user": "user1"
     },
     {
         "id": 2,
         "name": "task 2",
         "status": "en execuci\u00f3",
-        "dateTimeStarted": "2022-01-02T08:00:00Z",
-        "dateTimeFinished": "",
+        "dateTimeStarted": "2022-01-02T08:00:00",
+        "dateTimeFinished": null,
         "user": "user2"
     },
     {
         "id": 3,
         "name": "task 3",
         "status": "acabades",
-        "dateTimeStarted": "2022-01-03T06:30:00Z",
-        "dateTimeFinished": "2022-01-04T20:30:00Z",
+        "dateTimeStarted": "2022-01-03T06:30:00",
+        "dateTimeFinished": "2022-01-04T20:30:00",
         "user": "user3"
     }
 ]
