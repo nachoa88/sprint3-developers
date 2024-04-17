@@ -41,7 +41,7 @@ class TaskController extends Controller
         $this->view->taskData = $taskModel->getTaskById($taskId);
 
         // If form is sent, validate data and update task.
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateButton'])) {
             // Get ID from the submitted form, in the update view (hidden input field)
             $id = $_POST['id'];
             // Check if data is validated and retrieves $validatedData array
