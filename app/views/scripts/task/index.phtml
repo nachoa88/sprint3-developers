@@ -53,7 +53,7 @@
                     </td>
                     <!-- Update Task button -->
                     <td class="px-6 py-4">
-                        <form action='update' method='get'>
+                        <form id='updateForm' action='update' method='post'>
                             <input type='hidden' name='id' value='<?php echo $task['id']; ?>'>
                             <input type='submit' value='Update' class="bg-purple-700 hover:bg-purple-900 text-white py-2 px-3 rounded cursor-pointer">
                         </form>

@@ -36,11 +36,14 @@ class TaskController extends Controller
     {
         // Instanciate the model
         $taskModel = new Task();
+        // Get ID from request, it's stored from the form button in the index view.
+        $taskId = $_POST['id'];
+        $this->view->taskData = $taskModel->getTaskById($taskId);
 
         // If form is sent, validate data and update task.
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateButton'])) {
             // Get ID from the submitted form, in the update view (hidden input field)
-            $id = $_POST['id'];
+            // $id = $_POST['id'];
             // Check if data is validated and retrieves $validatedData array
             if ($validatedData = $this->validateForm($_POST)) {
 
@@ -52,13 +55,8 @@ class TaskController extends Controller
                 $taskModel->setUser($validatedData['user']);
 
                 // Update task data.
-                $this->view->taskData = $taskModel->updateTask($id, $validatedData);
+                $this->view->taskData = $taskModel->updateTask($_POST['id'], $validatedData);
             }
-        } else {
-            // Get ID from request, it's stored from the form button in the index view.
-            $id = $_GET['id'];
-            // If there is no updated task, display form with current task data.
-            $this->view->taskData = $taskModel->getTaskById($id);
         }
     }
 
@@ -90,7 +88,7 @@ class TaskController extends Controller
 
         // Validate that start date is anterior to finish date
         $dateErr = "";
-        if ($dateTimeStarted && $dateTimeFinished < $dateTimeStarted) {
+        if ($dateTimeStarted && $dateTimeFinished < $dateTimeStarted && $dateTimeFinished != null) {
             $dateErr = "Finish time is before start time. ";
         }
 
