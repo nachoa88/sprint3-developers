@@ -38,7 +38,7 @@ class Task
     public function createTask()
     {
         // Prepare statement, stage 1: prepare
-        $sql = "INSERT INTO task(name, status, dateTimeStarted, dateTimeFinished, user) VALUES (?, ?, ?, ?, ?)";
+        $sql = "INSERT INTO task(`name`, `status`, dateTimeStarted, dateTimeFinished, user) VALUES (?, ?, ?, ?, ?)";
         $stmt = $this->mysqli->prepare($sql);
 
         // Prepare statement, stage 2: bind and execute
@@ -58,7 +58,7 @@ class Task
     public function updateTask(int $id, array $newData)
     {
         // Prepare statement, stage 1: prepare
-        $sql = "UPDATE task SET name = ?, status = ?, dateTimeStarted = ?, dateTimeFinished = ?, user = ? WHERE id = ?";
+        $sql = "UPDATE task SET `name` = ?, `status` = ?, dateTimeStarted = ?, dateTimeFinished = ?, user = ? WHERE id = ?";
         $stmt = $this->mysqli->prepare($sql);
 
         // Prepare statement, stage 2: bind and execute

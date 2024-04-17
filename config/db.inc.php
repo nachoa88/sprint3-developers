@@ -7,7 +7,7 @@ class Db
   public function __construct()
   {
     // parses the settings file
-    // $settings = parse_ini_file('settings_stef.ini', true);
+    // $settings = parse_ini_file('settings_nacho.ini', true);
     $settings = parse_ini_file('settings_stef.ini', true);
 
     // starts the connection to the database
