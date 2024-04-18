@@ -3,9 +3,10 @@ require_once '../config/db.inc.php';
 
 class Task
 {
-    private $mysqli;
+    private $mongodb;
+    private $collection;
 
-    private int $id;
+    private $id;
     private $name;
     private $status;
     private $dateTimeStarted;
@@ -15,24 +16,23 @@ class Task
     public function __construct()
     {
         $db = new Db();
-        $this->mysqli = $db->getConnection();
+        $this->mongodb = $db->getConnection();
+        $this->collection = $db->getConnection()->tasks;
     }
 
     // CRUD Logic
     public function getAllTasks()
     {
-        $query = "SELECT * FROM task";
-        $result = $this->mysqli->query($query);
-        return $result;
+        $cursor = $this->collection->find([]);
+        return $cursor;
+
     }
 
-    public function getTaskById(int $id)
+    public function getTaskById($id)
     {
-        $query = "SELECT * FROM task WHERE id = $id";
-        $result = $this->mysqli->query($query);
-
-        $task = $result->fetch_assoc();
-        return $task;
+        $cursor = $this->collection->findOne(['_id' => $id]);
+        var_dump($id);
+        return $cursor;
     }
 
     public function createTask()
