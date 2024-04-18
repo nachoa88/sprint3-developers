@@ -4,6 +4,8 @@
 /Dockerfile
 /docker-compose.yml
 /info.php
+composer.json
+composer.lock
 
 *.log
 .DS_Store
