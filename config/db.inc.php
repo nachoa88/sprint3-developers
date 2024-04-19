@@ -2,25 +2,20 @@
 
 class Db
 {
-  private $mysqli;
+  private $db;
 
   public function __construct()
   {
-    // parses the settings file
-    // $settings = parse_ini_file('settings_nacho.ini', true);
-    $settings = parse_ini_file('settings_stef.ini', true);
+    // Starts the connection to the database
+    // $client = new MongoDB\Client("mongodb://mongodb:27017");
+    $client = new MongoDB\Client("mongodb://localhost:27017");
 
-    // starts the connection to the database
-    $this->mysqli = new mysqli(
-      $settings['database']['host'],
-      $settings['database']['user'],
-      $settings['database']['password'],
-      $settings['database']['dbname']
-    );
+    // Select a database
+    $this->db = $client->tasks;
   }
 
   public function getConnection()
   {
-    return $this->mysqli;
+    return $this->db;
   }
 }
