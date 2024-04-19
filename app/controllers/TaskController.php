@@ -36,13 +36,14 @@ class TaskController extends Controller
     {
         // Instanciate the model
         $taskModel = new Task();
+        // Get ID from request, it's stored from the form button in the index view.
         $taskId = $_POST['id'];
         $this->view->taskData = $taskModel->getTaskById($taskId);
-        
+
         // If form is sent, validate data and update task.
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateButton'])) {
-            // Get ID from the POST submitted form, in the update view (hidden input field)
-            // $id = $_POST['id'];
+            // Get ID from the submitted form, in the update view (hidden input field)
+            $id = $_POST['id'];
             // Check if data is validated and retrieves $validatedData array
             if ($validatedData = $this->validateForm($_POST)) {
 
@@ -53,8 +54,8 @@ class TaskController extends Controller
                 $taskModel->setDateTimeFinished($validatedData['dateTimeFinished']);
                 $taskModel->setUser($validatedData['user']);
 
-                // Update task data. Get ID from the POST submitted form, in the update view (hidden input field)
-                $this->view->taskData = $taskModel->updateTask($_POST['id'], $validatedData);
+                // Update task data.
+                $this->view->taskData = $taskModel->updateTask($id, $validatedData);
             }
         }
     }
