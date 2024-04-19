@@ -3,9 +3,10 @@ require_once '../config/db.inc.php';
 
 class Task
 {
-    private $mysqli;
+    private $mongodb;
+    private $collection;
 
-    private int $id;
+    private $id;
     private $name;
     private $status;
     private $dateTimeStarted;
@@ -15,71 +16,71 @@ class Task
     public function __construct()
     {
         $db = new Db();
-        $this->mysqli = $db->getConnection();
+        $this->mongodb = $db->getConnection();
+        $this->collection = $db->getConnection()->tasks;
     }
 
     // CRUD Logic
     public function getAllTasks()
     {
-        $query = "SELECT * FROM task";
-        $result = $this->mysqli->query($query);
-        return $result;
+        $cursor = $this->collection->find([]);
+        return $cursor;
     }
 
-    public function getTaskById(int $id)
+    public function getTaskById($id)
     {
-        $query = "SELECT * FROM task WHERE id = $id";
-        $result = $this->mysqli->query($query);
-
-        $task = $result->fetch_assoc();
-        return $task;
+        $cursor = $this->collection->findOne(['_id' => new MongoDB\BSON\ObjectId($id)]);
+        return $cursor;
     }
 
     public function createTask()
     {
-        // Prepare statement, stage 1: prepare
-        $sql = "INSERT INTO task(`name`, `status`, dateTimeStarted, dateTimeFinished, user) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $this->mysqli->prepare($sql);
-
-        // Prepare statement, stage 2: bind and execute
+        // Prepare statement
         $name = $this->name;
         $status = $this->status;
         $dateTimeStarted = $this->dateTimeStarted;
         $dateTimeFinished = $this->dateTimeFinished;
         $user = $this->user;
 
-        $stmt->bind_param("sssss", $name, $status, $dateTimeStarted, $dateTimeFinished, $user);
-        $stmt->execute();
+        $this->collection->insertOne([
+            'name' => $name,
+            'status' => $status,
+            'dateTimeStarted' => $dateTimeStarted,
+            'dateTimeFinished' => $dateTimeFinished,
+            'user' => $user,
+        ]);
 
         // After form is validated and processed, we want to redirect to index.
         return header('Location: index');
     }
 
-    public function updateTask(int $id, array $newData)
+    public function updateTask(string $id, array $newData)
     {
-        // Prepare statement, stage 1: prepare
-        $sql = "UPDATE task SET `name` = ?, `status` = ?, dateTimeStarted = ?, dateTimeFinished = ?, user = ? WHERE id = ?";
-        $stmt = $this->mysqli->prepare($sql);
+        // Prepare the filter
+        $filter = ['_id' => new MongoDB\BSON\ObjectId($id)];
 
-        // Prepare statement, stage 2: bind and execute
-        $id = $id;
-        $name = $this->name;
-        $status = $this->status;
-        $dateTimeStarted = $this->dateTimeStarted;
-        $dateTimeFinished = $this->dateTimeFinished;
-        $user = $this->user;
+        // Prepare the update operation
+        $update = [
+            '$set' => [
+                'name' => $newData['name'],
+                'status' => $newData['status'],
+                'dateTimeStarted' => $newData['dateTimeStarted'],
+                'dateTimeFinished' => $newData['dateTimeFinished'],
+                'user' => $newData['user'],
+            ]
+        ];
 
-        $stmt->bind_param("sssssi", $name, $status, $dateTimeStarted, $dateTimeFinished, $user, $id);
-        $stmt->execute();
+        // Update the document
+        $this->collection->updateOne($filter, $update);
 
         // After form is validated and processed, we want to redirect to index.
         return header('Location: index');
     }
 
-    public function deleteTask(int $id)
+    public function deleteTask($id)
     {
-        $query = "DELETE FROM task WHERE id = $id";
-        $this->mysqli->query($query);
+        $filter = ['_id' => $id];
+        $this->collection->deleteOne(['_id' => new MongoDB\BSON\ObjectId($id)]);
 
         // Return to to index
         return header('Location: index');
