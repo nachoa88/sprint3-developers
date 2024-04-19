@@ -35,19 +35,30 @@ class Task
 
     public function createTask()
     {
-        // Prepare statement, stage 1: prepare
-        $sql = "INSERT INTO task(`name`, `status`, dateTimeStarted, dateTimeFinished, user) VALUES (?, ?, ?, ?, ?)";
-        $stmt = $this->mysqli->prepare($sql);
-
-        // Prepare statement, stage 2: bind and execute
+        // Prepare statement
         $name = $this->name;
         $status = $this->status;
-        $dateTimeStarted = $this->dateTimeStarted;
-        $dateTimeFinished = $this->dateTimeFinished;
+        if ($this->dateTimeStarted) {
+            $dateTime = new DateTime($this->dateTimeStarted);
+            $dateTimeStarted = new MongoDB\BSON\UTCDateTime($dateTime->getTimestamp() * 1000);
+        }else{
+            $dateTimeStarted = $this->dateTimeStarted;
+        }
+        if ($this->dateTimeFinished) {
+            $dateTime = new DateTime($this->dateTimeFinished);
+            $dateTimeFinished = new MongoDB\BSON\UTCDateTime($dateTime->getTimestamp() * 1000);
+        }else{
+            $dateTimeFinished = $this->dateTimeFinished;
+        }
         $user = $this->user;
 
-        $stmt->bind_param("sssss", $name, $status, $dateTimeStarted, $dateTimeFinished, $user);
-        $stmt->execute();
+        $this->collection->insertOne([
+            'name' => $name,
+            'status' => $status,
+            'dateTimeStarted' => $dateTimeStarted,
+            'dateTimeFinished' => $dateTimeFinished,
+            'user' => $user,
+        ]);
 
         // After form is validated and processed, we want to redirect to index.
         return header('Location: index');
@@ -60,11 +71,15 @@ class Task
 
         // Convert date strings to MongoDB\BSON\UTCDateTime objects
         // getTimestamp * 1000 because MongoDB\BSON\UTCDateTime expects milliseconds
-        $dateTimeStarted = new DateTime($newData['dateTimeStarted']);
-        $newData['dateTimeStarted'] = new MongoDB\BSON\UTCDateTime($dateTimeStarted->getTimestamp() * 1000);
-
-        $dateTimeFinished = new DateTime($newData['dateTimeFinished']);
-        $newData['dateTimeFinished'] = new MongoDB\BSON\UTCDateTime($dateTimeFinished->getTimestamp() * 1000);
+        // If date is null we pass the null value to mongodb
+        if ($newData['dateTimeStarted']) {
+            $dateTimeStarted = new DateTime($newData['dateTimeStarted']);
+            $newData['dateTimeStarted'] = new MongoDB\BSON\UTCDateTime($dateTimeStarted->getTimestamp() * 1000);
+        }
+        if ($newData['dateTimeFinished']) {
+            $dateTimeFinished = new DateTime($newData['dateTimeFinished']);
+            $newData['dateTimeFinished'] = new MongoDB\BSON\UTCDateTime($dateTimeFinished->getTimestamp() * 1000);
+        }
 
         // Prepare the update operation
         $update = [
@@ -84,10 +99,10 @@ class Task
         return header('Location: index');
     }
 
-    public function deleteTask(int $id)
+    public function deleteTask($id)
     {
-        $query = "DELETE FROM task WHERE id = $id";
-        $this->mysqli->query($query);
+        $filter = ['_id' => $id];
+        $this->collection->deleteOne(['_id' => new MongoDB\BSON\ObjectId($id)]);
 
         // Return to to index
         return header('Location: index');

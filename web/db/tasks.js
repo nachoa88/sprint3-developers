@@ -13,10 +13,10 @@ db.createCollection('tasks', {
                     enum: ['pendents', 'en execució', 'acabades']
                 },
                 dateTimeStarted: {
-                    bsonType: 'date'
+                    bsonType: ['date', 'null']
                 },
                 dateTimeFinished: {
-                    bsonType: 'date'
+                    bsonType: ['date', 'null']
                 },
                 user: {
                     bsonType: 'string'
