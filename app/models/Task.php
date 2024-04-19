@@ -25,7 +25,6 @@ class Task
     {
         $cursor = $this->collection->find([]);
         return $cursor;
-
     }
 
     public function getTaskById($id)
@@ -54,22 +53,32 @@ class Task
         return header('Location: index');
     }
 
-    public function updateTask(int $id, array $newData)
+    public function updateTask(string $id, array $newData)
     {
-        // Prepare statement, stage 1: prepare
-        $sql = "UPDATE task SET `name` = ?, `status` = ?, dateTimeStarted = ?, dateTimeFinished = ?, user = ? WHERE id = ?";
-        $stmt = $this->mysqli->prepare($sql);
+        // Prepare the filter
+        $filter = ['_id' => new MongoDB\BSON\ObjectId($id)];
 
-        // Prepare statement, stage 2: bind and execute
-        $id = $id;
-        $name = $this->name;
-        $status = $this->status;
-        $dateTimeStarted = $this->dateTimeStarted;
-        $dateTimeFinished = $this->dateTimeFinished;
-        $user = $this->user;
+        // Convert date strings to MongoDB\BSON\UTCDateTime objects
+        // getTimestamp * 1000 because MongoDB\BSON\UTCDateTime expects milliseconds
+        $dateTimeStarted = new DateTime($newData['dateTimeStarted']);
+        $newData['dateTimeStarted'] = new MongoDB\BSON\UTCDateTime($dateTimeStarted->getTimestamp() * 1000);
 
-        $stmt->bind_param("sssssi", $name, $status, $dateTimeStarted, $dateTimeFinished, $user, $id);
-        $stmt->execute();
+        $dateTimeFinished = new DateTime($newData['dateTimeFinished']);
+        $newData['dateTimeFinished'] = new MongoDB\BSON\UTCDateTime($dateTimeFinished->getTimestamp() * 1000);
+
+        // Prepare the update operation
+        $update = [
+            '$set' => [
+                'name' => $newData['name'],
+                'status' => $newData['status'],
+                'dateTimeStarted' => $newData['dateTimeStarted'],
+                'dateTimeFinished' => $newData['dateTimeFinished'],
+                'user' => $newData['user'],
+            ]
+        ];
+
+        // Update the document
+        $this->collection->updateOne($filter, $update);
 
         // After form is validated and processed, we want to redirect to index.
         return header('Location: index');

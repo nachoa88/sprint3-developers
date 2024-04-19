@@ -1,3 +1,5 @@
+<?php var_dump($this->taskData); ?>
+
 <h2 class="flex flex-row flex-nowrap items-center mt-16 uppercase">
     <span class="flex-grow block border-t border-purple-700"></span>
     <span class="flex-none block mx-4 px-4 py-2.5 text-xl rounded leading-none font-medium bg-gray-900 text-white">
@@ -29,11 +31,11 @@
         </div>
         <div class="mb-5">
             <label for="dateTimeStarted" class="block mb-1 text-sm font-medium text-white">Start Date:</label>
-            <input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted" class="text-sm rounded-lg block w-full p-2 bg-gray-900 text-white" value="<?php echo isset($this->taskData['dateTimeStarted']) ? date('Y-m-d\TH:i', strtotime($this->taskData['dateTimeStarted'])) : ''; ?>" />
+            <input type="datetime-local" id="dateTimeStarted" name="dateTimeStarted" class="text-sm rounded-lg block w-full p-2 bg-gray-900 text-white" value="<?php echo isset($this->taskData['dateTimeStarted']) && $this->taskData['dateTimeStarted'] != null ? $this->taskData['dateTimeStarted']->toDateTime()->format('Y-m-d\TH:i') : ''; ?>" />
         </div>
         <div class="mb-5">
             <label for="dateTimeFinished" class="block mb-1 text-sm font-medium text-white">Finish Date:</label>
-            <input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished" class="text-sm rounded-lg block w-full p-2 bg-gray-900 text-white" value="<?php echo isset($this->taskData['dateTimeFinished']) ? date('Y-m-d\TH:i', strtotime($this->taskData['dateTimeFinished'])) : ''; ?>" />
+            <input type="datetime-local" id="dateTimeFinished" name="dateTimeFinished" class="text-sm rounded-lg block w-full p-2 bg-gray-900 text-white" value="<?php echo isset($this->taskData['dateTimeFinished']) && $this->taskData['dateTimeFinished'] != null ? $this->taskData['dateTimeFinished']->toDateTime()->format('Y-m-d\TH:i') : ''; ?>" />
         </div>
         <div class="mb-5">
             <label for="user" class="block mb-1 text-sm font-medium text-white">User:</label>

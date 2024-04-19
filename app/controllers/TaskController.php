@@ -43,7 +43,7 @@ class TaskController extends Controller
         // If form is sent, validate data and update task.
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateButton'])) {
             // Get ID from the submitted form, in the update view (hidden input field)
-            $id = $_POST['_id'];
+            $id = $_POST['id'];
             // Check if data is validated and retrieves $validatedData array
             if ($validatedData = $this->validateForm($_POST)) {
 
@@ -105,6 +105,7 @@ class TaskController extends Controller
             echo $dateErr;
             echo $userErr;
             echo "</div>";
+            return false;
         } else {
             // If no error, return an array with validated data
             $validatedData['name'] = $name;
