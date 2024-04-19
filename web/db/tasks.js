@@ -41,6 +41,7 @@ db.tasks.insertMany([
         name: "Task 2",
         status: "en execució",
         dateTimeStarted: new Date("2022-01-02T11:00:00Z"),
+        dateTimeFinished: new Date(null),
         user: "User2"
     },
     {
@@ -54,6 +55,7 @@ db.tasks.insertMany([
         name: "Task 4",
         status: "pendents",
         dateTimeStarted: new Date("2022-01-04T13:00:00Z"),
+        dateTimeFinished: new Date(null),
         user: "User4"
     }
 ]);

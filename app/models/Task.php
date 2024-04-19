@@ -30,8 +30,7 @@ class Task
 
     public function getTaskById($id)
     {
-        $cursor = $this->collection->findOne(['_id' => $id]);
-        var_dump($id);
+        $cursor = $this->collection->findOne(['_id' => new MongoDB\BSON\ObjectId($id)]);
         return $cursor;
     }
 
