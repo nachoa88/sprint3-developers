@@ -6,7 +6,7 @@ class TaskController extends Controller
         // Get all tasks and display them
         $taskModel = new Task();
         // We send documents array to function formatDocument to nulled the date if unix timestamp = 0
-        foreach($taskModel->getAllTasks() as $key => $data){
+        foreach ($taskModel->getAllTasks() as $key => $data) {
             $tasks[$key] = $this->formatDocument($data);
         }
         $this->view->message = $tasks;
@@ -23,15 +23,18 @@ class TaskController extends Controller
             // Check if data is validated and retrieves $validatedData array
             if ($validatedData = $this->validateForm($_POST)) {
 
+                // If data if validated we prepare the date
+                $preparedData = $this->prepareDate($validatedData);
+
                 // Instanciate the model
                 $taskModel = new Task();
 
-                // Pass validated data to the model
-                $taskModel->setName($validatedData['name']);
-                $taskModel->setStatus($validatedData['status']);
-                $taskModel->setDateTimeStarted($validatedData['dateTimeStarted']);
-                $taskModel->setDateTimeFinished($validatedData['dateTimeFinished']);
-                $taskModel->setUser($validatedData['user']);
+                // Pass prepared data to the model
+                $taskModel->setName($preparedData['name']);
+                $taskModel->setStatus($preparedData['status']);
+                $taskModel->setDateTimeStarted($preparedData['dateTimeStarted']);
+                $taskModel->setDateTimeFinished($preparedData['dateTimeFinished']);
+                $taskModel->setUser($preparedData['user']);
 
                 // Call the method
                 $this->view->message = $taskModel->createTask();
@@ -52,22 +55,25 @@ class TaskController extends Controller
         // Send to the view
         $this->view->taskData = $taskById;
 
-        // If form is sent, validate data and update task.
+        // If form is sent, validate data
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateButton'])) {
             // Get ID from the submitted form, in the update view (hidden input field)
             $id = $_POST['id'];
             // Check if data is validated and retrieves $validatedData array
             if ($validatedData = $this->validateForm($_POST)) {
 
-                // Pass validated data to the model
-                $taskModel->setName($validatedData['name']);
-                $taskModel->setStatus($validatedData['status']);
-                $taskModel->setDateTimeStarted($validatedData['dateTimeStarted']);
-                $taskModel->setDateTimeFinished($validatedData['dateTimeFinished']);
-                $taskModel->setUser($validatedData['user']);
+                // If data if validated we prepare the date
+                $preparedData = $this->prepareDate($validatedData);
+
+                // Pass prepared data to the model
+                $taskModel->setName($preparedData['name']);
+                $taskModel->setStatus($preparedData['status']);
+                $taskModel->setDateTimeStarted($preparedData['dateTimeStarted']);
+                $taskModel->setDateTimeFinished($preparedData['dateTimeFinished']);
+                $taskModel->setUser($preparedData['user']);
 
                 // Update task data.
-                $this->view->taskData = $taskModel->updateTask($id, $validatedData);
+                $this->view->taskData = $taskModel->updateTask($id, $preparedData);
             }
         }
     }
@@ -136,7 +142,7 @@ class TaskController extends Controller
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
         // If form return empty string, convert to null value to match MySql field types
-        if($data == ''){
+        if ($data == '') {
             $data = null;
         }
         return $data;
@@ -145,12 +151,29 @@ class TaskController extends Controller
     // Function that nulled the date if unix timestamp is = 0 or empty string
     public function formatDocument($document)
     {
-        if($document['dateTimeStarted'] == '0' || $document['dateTimeStarted'] == ''){
+        if ($document['dateTimeStarted'] == '0' || $document['dateTimeStarted'] == '') {
             $document['dateTimeStarted'] = null;
         }
 
-        if($document['dateTimeFinished'] == '0' || $document['dateTimeFinished'] == ''){
+        if ($document['dateTimeFinished'] == '0' || $document['dateTimeFinished'] == '') {
             $document['dateTimeFinished'] = null;
+        }
+        return $document;
+    }
+
+    // If date is null we pass the null value to mongodb
+    // If date exist, convert date strings to MongoDB\BSON\UTCDateTime objects
+    // getTimestamp * 1000 because MongoDB\BSON\UTCDateTime expects milliseconds
+    public function prepareDate($document)
+    {
+        if ($document['dateTimeStarted']) {
+            $dateTimeStarted = new DateTime($document['dateTimeStarted']);
+            $document['dateTimeStarted'] = new MongoDB\BSON\UTCDateTime($dateTimeStarted->getTimestamp() * 1000);
+        }
+
+        if ($document['dateTimeFinished']) {
+            $dateTimeFinished = new DateTime($document['dateTimeFinished']);
+            $document['dateTimeFinished'] = new MongoDB\BSON\UTCDateTime($dateTimeFinished->getTimestamp() * 1000);
         }
         return $document;
     }

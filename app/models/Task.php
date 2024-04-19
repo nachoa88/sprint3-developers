@@ -38,18 +38,8 @@ class Task
         // Prepare statement
         $name = $this->name;
         $status = $this->status;
-        if ($this->dateTimeStarted) {
-            $dateTime = new DateTime($this->dateTimeStarted);
-            $dateTimeStarted = new MongoDB\BSON\UTCDateTime($dateTime->getTimestamp() * 1000);
-        }else{
-            $dateTimeStarted = $this->dateTimeStarted;
-        }
-        if ($this->dateTimeFinished) {
-            $dateTime = new DateTime($this->dateTimeFinished);
-            $dateTimeFinished = new MongoDB\BSON\UTCDateTime($dateTime->getTimestamp() * 1000);
-        }else{
-            $dateTimeFinished = $this->dateTimeFinished;
-        }
+        $dateTimeStarted = $this->dateTimeStarted;
+        $dateTimeFinished = $this->dateTimeFinished;
         $user = $this->user;
 
         $this->collection->insertOne([
@@ -68,18 +58,6 @@ class Task
     {
         // Prepare the filter
         $filter = ['_id' => new MongoDB\BSON\ObjectId($id)];
-
-        // Convert date strings to MongoDB\BSON\UTCDateTime objects
-        // getTimestamp * 1000 because MongoDB\BSON\UTCDateTime expects milliseconds
-        // If date is null we pass the null value to mongodb
-        if ($newData['dateTimeStarted']) {
-            $dateTimeStarted = new DateTime($newData['dateTimeStarted']);
-            $newData['dateTimeStarted'] = new MongoDB\BSON\UTCDateTime($dateTimeStarted->getTimestamp() * 1000);
-        }
-        if ($newData['dateTimeFinished']) {
-            $dateTimeFinished = new DateTime($newData['dateTimeFinished']);
-            $newData['dateTimeFinished'] = new MongoDB\BSON\UTCDateTime($dateTimeFinished->getTimestamp() * 1000);
-        }
 
         // Prepare the update operation
         $update = [
