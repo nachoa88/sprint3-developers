@@ -66,7 +66,7 @@
 					"comment": "",
 					"data": "",
 					"enum": "",
-					"validation": "",
+					"validation": "['date', 'null']",
 					"pattern": false,
 					"estimatedSize": "",
 					"any": ""
@@ -82,7 +82,7 @@
 					"comment": "",
 					"data": "",
 					"enum": "",
-					"validation": "",
+					"validation": "['date', 'null']",
 					"pattern": false,
 					"estimatedSize": "",
 					"any": ""
@@ -126,8 +126,8 @@
 			"customCode": "",
 			"beforeScript": "",
 			"afterScript": "",
-			"validationLevel": "na",
-			"validationAction": "na",
+			"validationLevel": "strict",
+			"validationAction": "error",
 			"collation": "",
 			"others": "",
 			"size": "",
@@ -173,7 +173,8 @@
 		"def_validationAction": "na",
 		"def_collation": "",
 		"def_others": "",
-		"connectionVersion": ""
+		"connectionVersion": "",
+		"lastSaved": 1713601895461
 	},
 	"otherObjects": {},
 	"diagrams": {
