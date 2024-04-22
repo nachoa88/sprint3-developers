@@ -5,20 +5,13 @@ class TaskController extends Controller
     {
         // Get all tasks and display them
         $taskModel = new Task();
-        // We send documents array to function formatDocument to nulled the date if unix timestamp = 0
-        foreach ($taskModel->getAllTasks() as $key => $data) {
-            $tasks[$key] = $this->formatDocument($data);
-        }
-        $this->view->message = $tasks;
+        $this->view->message = $taskModel->getAllTasks();
     }
 
     public function createTaskAction()
     {
         // If form is sent
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-            // We send document to function formatDocument to nulled the date if it has empty string
-            $this->formatDocument($_POST);
 
             // Check if data is validated and retrieves $validatedData array
             if ($validatedData = $this->validateForm($_POST)) {
@@ -50,10 +43,7 @@ class TaskController extends Controller
         $taskId = $_POST['id'];
         // We get the document by id
         $taskById = $taskModel->getTaskById($taskId);
-        // We send document to function formatDocument to nulled the date if unix timestamp = 0
-        $this->formatDocument($taskById);
-        // Send to the view
-        $this->view->taskData = $taskById;
+        $this->view->taskData = $taskModel->getTaskById($taskId);
 
         // If form is sent, validate data
         if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['updateButton'])) {
@@ -141,24 +131,11 @@ class TaskController extends Controller
         $data = trim($data);
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
-        // If form return empty string, convert to null value to match MySql field types
+        // If form return empty string, convert to null value to match BSON field types
         if ($data == '') {
             $data = null;
         }
         return $data;
-    }
-
-    // Function that nulled the date if unix timestamp is = 0 or empty string
-    public function formatDocument($document)
-    {
-        if ($document['dateTimeStarted'] == '0' || $document['dateTimeStarted'] == '') {
-            $document['dateTimeStarted'] = null;
-        }
-
-        if ($document['dateTimeFinished'] == '0' || $document['dateTimeFinished'] == '') {
-            $document['dateTimeFinished'] = null;
-        }
-        return $document;
     }
 
     // If date is null we pass the null value to mongodb
